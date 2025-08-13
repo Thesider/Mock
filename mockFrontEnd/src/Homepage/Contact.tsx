@@ -16,7 +16,7 @@ const Contact: React.FC = () => {
       <section className="contact-content">
         <div className="contact-info">
           <h2>Get In Touch</h2>
-          <p>📍 123 Main Street, Hanoi, Vietnam</p>
+          <p>📍 Ngu Hanh Son, Da Nang City, Viet Nam</p>
           <p>📞 +84 123 456 789</p>
           <p>📧 support@healthcare.com</p>
         </div>

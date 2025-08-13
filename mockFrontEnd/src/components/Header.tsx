@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaSignInAlt, FaCalendarCheck } from "react-icons/fa";
+import { FaSignInAlt, FaCalendarCheck, FaBars, FaTimes } from "react-icons/fa";
 import "../assets/Header.css";
 
 const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <header className="navbar">
       <div className="logo">
@@ -12,29 +18,57 @@ const Header: React.FC = () => {
         </NavLink>
       </div>
 
-      <nav>
-        <NavLink to="/" className="nav-link">
+      <button className="hamburger" onClick={toggleMenu}>
+        {isMenuOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
+      <nav className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
+        <NavLink
+          to="/"
+          className="nav-link"
+          onClick={() => setIsMenuOpen(false)}
+        >
           Home
         </NavLink>
 
         <div className="dropdown">
-          <NavLink to="/services" className="nav-link">
+          <NavLink
+            to="/services"
+            className="nav-link"
+            onClick={() => setIsMenuOpen(false)}
+          >
             Services
           </NavLink>
           <div className="dropdown-content">
-            <NavLink to="/doctors" className="dropdown-item">
+            <NavLink
+              to="/doctors"
+              className="dropdown-item"
+              onClick={() => setIsMenuOpen(false)}
+            >
               List of doctors
             </NavLink>
-            <NavLink to="/book" className="dropdown-item">
+            <NavLink
+              to="/book"
+              className="dropdown-item"
+              onClick={() => setIsMenuOpen(false)}
+            >
               Booking form
             </NavLink>
           </div>
         </div>
 
-        <NavLink to="/about" className="nav-link">
+        <NavLink
+          to="/about"
+          className="nav-link"
+          onClick={() => setIsMenuOpen(false)}
+        >
           About
         </NavLink>
-        <NavLink to="/contact" className="nav-link">
+        <NavLink
+          to="/contact"
+          className="nav-link"
+          onClick={() => setIsMenuOpen(false)}
+        >
           Contact
         </NavLink>
       </nav>

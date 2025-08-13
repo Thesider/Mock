@@ -6,46 +6,46 @@ const features = [
     icon: "📅",
     title: "Online Appointments",
     description:
-      "Provide 24/7 visibility of available appointments, allow patients to book their next visit in real time for all ages and technical ranges.",
+      "Easily book appointments 24/7 with real-time visibility of available slots, suitable for patients of all ages and technical abilities.",
   },
   {
     icon: "🧩",
-    title: "Seamless Integration",
+    title: "Seamless Booking Experience",
     description:
-      "Pharmacy can integrate with your PAS system through our bespoke API and HL7 integration, providing a full end-to-end solution.",
+      "Our platform ensures a smooth and intuitive booking process, guiding patients to select the right time and doctor effortlessly.",
   },
   {
     icon: "👩‍⚕️",
-    title: "Clinic Administration",
+    title: "Doctor Availability",
     description:
-      "Pharmacy provides efficient solutions to manage clinic workflows and KPI's built on years of healthcare staff feedback & best practices.",
+      "View real-time schedules of doctors and book appointments with your preferred healthcare provider quickly and easily.",
   },
   {
     icon: "📲",
-    title: "Touch Screen Tablet & Kiosk Check In",
+    title: "Mobile-Friendly Booking",
     description:
-      "Reduce administration and data entry errors through easy-to-use patient self check-in and validation of patient information.",
+      "Book appointments on the go using our mobile-optimized platform, ensuring convenience and accessibility anywhere, anytime.",
   },
   {
     icon: "🛡️",
     title: "Fast and Secure",
     description:
-      "Keeping your data secure is our top priority. Our hosted centres are certified ISO27001 and comply with NHS Information Governance standards.",
+      "Your booking data is protected with top-tier security measures, ensuring a fast and safe appointment scheduling experience.",
   },
   {
     icon: "📋",
-    title: "Patient Results",
+    title: "Appointment Management",
     description:
-      "Pharmacy provides a market-leading patient portal, where patients can view, reschedule, cancel appointments and view specific results.",
+      "Easily manage your appointments, including rescheduling or canceling, through our user-friendly booking interface.",
   },
 ];
 
 const FeaturesSection: React.FC = () => {
   return (
     <section id="about-section" className="features-section">
-      <h2>See how Pharmacy can improve your clinic today</h2>
+      <h2>Discover how our platform simplifies appointment booking</h2>
       <p className="subtitle">
-        Create a seamless and integrated patient pathway experience
+        Enjoy a seamless and efficient booking experience tailored for patients
       </p>
       <div className="features-grid">
         {features.map((f, index) => (

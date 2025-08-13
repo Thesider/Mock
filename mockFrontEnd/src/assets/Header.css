@@ -23,19 +23,30 @@
   transform: scale(1.05);
 }
 
-/* Navigation */
-nav {
-  display: flex;
-  gap: 25px;
-  align-items: center; /* Giúp tất cả item thẳng hàng */
+/* Hamburger button */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
 }
 
-nav a,
+/* Navigation */
+.nav-menu {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav-link,
 .dropdown > .nav-link {
   text-decoration: none;
   color: #333;
   padding: 8px 14px;
-  font-weight: bold; /* Menu chữ in đậm */
+  font-weight: bold;
   font-size: 16px;
   font-family: "Roboto", sans-serif;
   line-height: 1.5;
@@ -46,18 +57,18 @@ nav a,
   position: relative;
 }
 
-nav a:hover,
+.nav-link:hover,
 .dropdown > .nav-link:hover {
   color: #e0ec34;
 }
 
-nav a.active {
+.nav-link.active {
   color: #e0ec34;
   border-bottom: 2px solid #e0ec34;
 }
 
 /* Hover underline effect */
-nav a::after,
+.nav-link::after,
 .dropdown > .nav-link::after {
   content: "";
   position: absolute;
@@ -69,7 +80,7 @@ nav a::after,
   transition: width 0.3s ease;
 }
 
-nav a:hover::after,
+.nav-link:hover::after,
 .dropdown > .nav-link:hover::after {
   width: 100%;
 }
@@ -127,9 +138,10 @@ nav a:hover::after,
 }
 
 .dropdown-content {
-  display: block; /* Luôn block để giữ layout, ẩn bằng opacity */
+  display: block;
   opacity: 0;
   visibility: hidden;
+  font-family: "Roboto", sans-serif;
   position: absolute;
   background: white;
   min-width: 180px;
@@ -138,8 +150,6 @@ nav a:hover::after,
   top: 100%;
   left: 0;
   z-index: 1000;
-
-  /* Animation */
   transform: translateY(10px);
   transition: all 0.3s ease;
 }
@@ -155,7 +165,7 @@ nav a:hover::after,
 }
 
 .dropdown-content a:hover {
-  background: #efeaea;
+  background: #02aad1;
 }
 
 /* Hover to show dropdown with animation */
@@ -169,18 +179,75 @@ nav a:hover::after,
 @media (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;
-    padding: 15px 20px;
+    padding: 10px 20px;
   }
 
-  nav {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    flex-direction: column;
     width: 100%;
-    justify-content: center;
-    margin-top: 10px;
+    background: #00b4d8;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 20px;
+    z-index: 999;
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  .nav-link,
+  .dropdown > .nav-link {
+    width: 100%;
+    padding: 10px 0;
+    text-align: left;
+  }
+
+  .dropdown-content {
+    position: static;
+    background: #f0f0f0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    padding-left: 20px;
   }
 
   .nav-buttons {
     width: 100%;
-    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
     margin-top: 10px;
+  }
+
+  .nav-buttons button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo img {
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .nav-link,
+  .dropdown > .nav-link {
+    font-size: 14px;
+  }
+
+  .nav-buttons button {
+    font-size: 14px;
+    padding: 8px 15px;
   }
 }
