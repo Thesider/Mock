@@ -17,10 +17,10 @@
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Luôn 3 cột */
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   max-width: 1100px;
-  margin: 0 auto; /* Căn giữa */
+  margin: 0 auto;
 }
 
 .feature-card {

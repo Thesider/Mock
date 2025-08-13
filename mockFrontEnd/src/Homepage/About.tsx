@@ -13,7 +13,7 @@ const About: React.FC = () => {
         <div className="about-hero-content">
           <h1>About Us</h1>
           <p>
-            At Swiftqueue, we are committed to transforming the way patients
+            At Pharmacy, we are committed to transforming the way patients
             access and experience healthcare services.
           </p>
         </div>

@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
           <h4>Contact Us</h4>
           <p>Email: support@pharmacy.com</p>
           <p>Phone: +84 123 456 789</p>
-          <p>Address: Ngu Hanh Son, Da Nang City</p>
+          <p>Address: 37 Thai Phien, Phuoc Ninh, Hai Chau, Da Nang, Viet Nam</p>
         </div>
 
         {/* Mạng xã hội */}

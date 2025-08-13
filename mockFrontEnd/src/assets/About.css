@@ -9,10 +9,10 @@
 /* ===== Hero Section ===== */
 .about-hero {
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("/images/hospital-bg.jpg") center/cover no-repeat;
+    url("./images/hospital-bg.jpg") center/cover no-repeat;
   color: white;
   text-align: center;
-  padding: 100px 20px;
+  padding: 130px 20px;
 }
 
 .about-hero h1 {

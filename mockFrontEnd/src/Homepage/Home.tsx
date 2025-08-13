@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
           </p>
           <div className="hero-buttons">
             <button className="contact-btn" onClick={handleContactClick}>
-              Contact us
+              📞 Contact us
             </button>
             <button className="learn-btn" onClick={handleLearnMoreClick}>
               Learn More ▼
