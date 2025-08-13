@@ -1,0 +1,186 @@
+/* ===== Header.css ===== */
+
+/* Navbar chính */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 40px;
+  background: linear-gradient(90deg, #0798c4, #00b4d8);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logo */
+.logo img {
+  height: 70px;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 25px;
+  align-items: center; /* Giúp tất cả item thẳng hàng */
+}
+
+nav a,
+.dropdown > .nav-link {
+  text-decoration: none;
+  color: #333;
+  padding: 8px 14px;
+  font-weight: bold; /* Menu chữ in đậm */
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  position: relative;
+}
+
+nav a:hover,
+.dropdown > .nav-link:hover {
+  color: #e0ec34;
+}
+
+nav a.active {
+  color: #e0ec34;
+  border-bottom: 2px solid #e0ec34;
+}
+
+/* Hover underline effect */
+nav a::after,
+.dropdown > .nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: white;
+  bottom: -5px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+.dropdown > .nav-link:hover::after {
+  width: 100%;
+}
+
+/* Buttons */
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-buttons button {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+/* Login Button */
+.login-btn {
+  background: white;
+  color: #0077b6;
+  border: 1px solid transparent;
+}
+
+.login-btn:hover {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+}
+
+/* Book Appointment Button */
+.book-btn {
+  background: #cee66e;
+  color: #222;
+}
+
+.book-btn:hover {
+  background: #faa307;
+  color: white;
+}
+
+/* Icon styling */
+.btn-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+/* ===== Dropdown container ===== */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: block; /* Luôn block để giữ layout, ẩn bằng opacity */
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  background: white;
+  min-width: 180px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+
+  /* Animation */
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  color: #000000;
+  transition: background 0.3s ease;
+}
+
+.dropdown-content a:hover {
+  background: #efeaea;
+}
+
+/* Hover to show dropdown with animation */
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 15px 20px;
+  }
+
+  nav {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .nav-buttons {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+}

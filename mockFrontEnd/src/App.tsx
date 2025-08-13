@@ -1,15 +1,17 @@
-import { useState } from 'react'
-import './App.css'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./Homepage/Home";
+import About from "./Homepage/About";
+import Contact from "./Homepage/Contact";
 
-function App() {
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+    </Routes>
+  );
+};
 
-      </div>
-    </>
-  )
-}
-
-export default App
+export default App;

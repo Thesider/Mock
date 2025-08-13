@@ -1,0 +1,146 @@
+/* ===== ABOUT PAGE STYLES ===== */
+
+.about-page {
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* ===== Hero Section ===== */
+.about-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("/images/hospital-bg.jpg") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.about-hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.about-hero p {
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ===== Mission & Vision ===== */
+.mission-vision {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+  background-color: #ffffff;
+}
+
+.mission,
+.vision {
+  flex: 1 1 300px;
+  background: #f0fdfb;
+  border-left: 6px solid #1abc9c;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.mission h2,
+.vision h2 {
+  color: #1abc9c;
+  margin-bottom: 15px;
+}
+
+/* ===== Our Story ===== */
+.about-content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 50px 80px;
+  background: #f9f9f9;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text p {
+  margin-bottom: 15px;
+  line-height: 1.7;
+  color: #444;
+  font-size: 16px;
+}
+
+.about-image {
+  flex: 1;
+}
+
+.about-image img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+/* ===== Core Values ===== */
+.core-values {
+  background-color: #ffffff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.core-values h2 {
+  color: #1abc9c;
+  margin-bottom: 40px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.value-card {
+  background: #f0fdfb;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e1f5f2;
+  transition: transform 0.2s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+}
+
+.value-card h3 {
+  color: #16a085;
+  margin-bottom: 10px;
+}
+
+/* ===== Call to Action ===== */
+.about-cta {
+  background-color: #1abc9c;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.about-cta h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.about-cta p {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .about-hero h1 {
+    font-size: 32px;
+  }
+  .about-hero p {
+    font-size: 16px;
+  }
+}
