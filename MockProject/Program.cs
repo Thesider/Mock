@@ -8,7 +8,10 @@ using MockProject.Modules.User;
 using MockProject.Modules.Patient;
 using MockProject.Modules.Appointment;
 using MockProject.Modules.Staff;
+<<<<<<< HEAD
 using System.Text.Json.Serialization;
+=======
+>>>>>>> kien
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+<<<<<<< HEAD
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -30,6 +34,8 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+=======
+>>>>>>> kien
 
 builder.Services.AddDbContext<MockDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -69,6 +75,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
+<<<<<<< HEAD
 app.UseCors("AllowAll");
+=======
+
+>>>>>>> kien
 
 app.Run();

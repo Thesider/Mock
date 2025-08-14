@@ -1,5 +1,11 @@
 import React from "react";
-import { Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard/Dashboard';
+import MyAppointments from './pages/MyAppointments/MyAppointments';
+import Profile from './pages/Profile/Profile';
+import BookAppointment from './pages/BookAppointment/BookAppointment';
+import CheckIn from './pages/CheckIn/CheckIn';
+import MedicalRecords from './pages/MedicalRecords/MedicalRecords';
 import Home from "./Homepage/Home";
 import About from "./Homepage/About";
 import Contact from "./Homepage/Contact";
