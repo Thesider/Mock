@@ -1,0 +1,19 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  background-color: #f8fafc;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  margin-top: 70px;
+  padding: 24px;
+  overflow-y: auto;
+}
