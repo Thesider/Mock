@@ -1,15 +1,19 @@
-import { useState } from 'react'
-import './App.css'
+
+import './App.css';
+import { Routes, Route, Link } from 'react-router-dom';
+import { DoctorPage } from './Modules/Doctor/components';
 
 function App() {
-
   return (
-    <>
-      <div>
-
-      </div>
-    </>
-  )
+    <div>
+      <nav>
+        <Link to="/doctors">Doctors</Link>
+      </nav>
+      <Routes>
+        <Route path="/doctors" element={<DoctorPage />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
