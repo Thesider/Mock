@@ -57,14 +57,14 @@ const DoctorList: React.FC<DoctorListProps> = ({
       status === "Online"
         ? "statusOnline"
         : status === "Busy"
-        ? "statusBusy"
-        : "statusOffline";
+          ? "statusBusy"
+          : "statusOffline";
     const dotClass =
       status === "Online"
         ? "statusDotOnline"
         : status === "Busy"
-        ? "statusDotBusy"
-        : "statusDotOffline";
+          ? "statusDotBusy"
+          : "statusDotOffline";
 
     return (
       <span className={`statusBadge ${statusClass}`}>
