@@ -9,21 +9,23 @@ const About: React.FC = () => {
 
   const doctors = [
     {
-      name: "Dr. Nguyễn Văn A",
-      title: "Chuyên khoa Tim mạch",
-      achievements: "20+ năm kinh nghiệm, tác giả 15 nghiên cứu khoa học",
+      name: "Dr. Nguyen Van A",
+      title: "Cardiology Specialist",
+      achievements:
+        "Over 20 years of experience, author of 15 scientific research papers",
       image: "/images/doctor1.jpg",
     },
     {
-      name: "Dr. Trần Thị B",
-      title: "Chuyên khoa Nhi",
-      achievements: "Thành viên Hội Y học Quốc tế, giảng viên ĐH Y Hà Nội",
+      name: "Dr. Tran Thi B",
+      title: "Pediatrics Specialist",
+      achievements:
+        "Member of the International Medical Association, lecturer at Hanoi Medical University",
       image: "/images/doctor2.jpg",
     },
     {
-      name: "Dr. Lê Văn C",
-      title: "Chuyên khoa Ngoại",
-      achievements: "Thực hiện hơn 500 ca phẫu thuật thành công",
+      name: "Dr. Le Van C",
+      title: "Surgery Specialist",
+      achievements: "Performed over 500 successful surgeries",
       image: "/images/doctor3.jpg",
     },
   ];
@@ -85,9 +87,9 @@ const About: React.FC = () => {
         <div className={styles.aboutText}>
           <h2>Our Story</h2>
           <p>
-            Founded in 2020, Swiftqueue was born from a simple yet powerful
-            idea: to remove the stress, confusion, and inefficiency that
-            patients often face when booking healthcare appointments.
+            Founded in 2020, Pharmacy was born from a simple yet powerful idea:
+            to remove the stress, confusion, and inefficiency that patients
+            often face when booking healthcare appointments.
           </p>
           <p>
             Our founders saw how long waiting times, missed appointments, and
