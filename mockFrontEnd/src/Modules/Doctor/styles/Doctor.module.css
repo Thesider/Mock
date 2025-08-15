@@ -1,0 +1,80 @@
+.content {
+  width: 100%; /* Mở rộng hết chiều ngang */
+  padding: 2rem; /* Giữ khoảng cách hợp lý với các cạnh */
+  background-color: #fff; /* Đảm bảo nền trắng, khớp với giao diện */
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.headerTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.headerSubtitle {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%; /* Mở rộng hết chiều ngang */
+}
+
+.loadingContent {
+  text-align: center;
+}
+
+.loadingText {
+  font-size: 1.2rem;
+  color: #3498db;
+}
+
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%; /* Mở rộng hết chiều ngang */
+}
+
+.errorContent {
+  text-align: center;
+}
+
+.errorTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+}
+
+.errorMessage {
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.button {
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttonPrimary {
+  background-color: #3498db;
+  color: white;
+}
+
+.buttonPrimary:hover {
+  background-color: #2980b9;
+}

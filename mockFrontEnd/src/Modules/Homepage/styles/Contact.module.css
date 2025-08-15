@@ -1,33 +1,33 @@
-/* ===== Contact.css ===== */
+/* Contact.module.css */
 
 /* Reset & base style */
-.contact-page {
+.contactPage {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
 /* Hero section */
-.contact-hero {
+.contactHero {
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("./images/contact.jpg") center/cover no-repeat;
+    url("/images/contact.jpg") center/cover no-repeat;
   color: white;
   text-align: center;
   padding: 144px 20px;
 }
 
-.contact-hero h1 {
+.contactHero h1 {
   font-size: 3rem;
   margin-bottom: 15px;
 }
 
-.contact-hero p {
+.contactHero p {
   font-size: 1.2rem;
   max-width: 600px;
   margin: auto;
 }
 
 /* Main content layout */
-.contact-content {
+.contactContent {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -37,7 +37,7 @@
 }
 
 /* Contact info */
-.contact-info {
+.contactInfo {
   flex: 1;
   background: #f9f9f9;
   padding: 30px;
@@ -45,12 +45,12 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.contact-info h2 {
+.contactInfo h2 {
   color: #1abc9c;
   margin-bottom: 15px;
 }
 
-.contact-info p {
+.contactInfo p {
   margin: 10px 0;
   font-size: 1rem;
   display: flex;
@@ -58,19 +58,19 @@
   gap: 10px;
 }
 
-.email-link {
+.emailLink {
   color: #007bff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.email-link:hover {
+.emailLink:hover {
   color: #0056b3;
   text-decoration: underline;
 }
 
 /* Contact map */
-.contact-map {
+.contactMap {
   flex: 1;
   background: #ffffff;
   padding: 30px;
@@ -78,12 +78,12 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.contact-map h2 {
+.contactMap h2 {
   color: #1abc9c;
   margin-bottom: 20px;
 }
 
-.map-image {
+.mapImage {
   width: 100%;
   height: 400px;
   object-fit: cover;
@@ -92,12 +92,12 @@
   transition: transform 0.3s ease;
 }
 
-.map-image:hover {
+.mapImage:hover {
   transform: scale(1.02);
 }
 
 /* Map modal */
-.map-modal {
+.mapModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -110,7 +110,7 @@
   z-index: 2000;
 }
 
-.map-modal-content {
+.mapModalContent {
   position: relative;
   max-width: 80%;
   max-height: 80%;
@@ -120,7 +120,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.map-modal-image {
+.mapModalImage {
   width: 100%;
   height: auto;
   max-height: 80vh;
@@ -128,7 +128,7 @@
   border-radius: 8px;
 }
 
-.map-modal-close {
+.mapModalClose {
   position: absolute;
   top: -15px;
   right: -15px;
@@ -146,68 +146,68 @@
   transition: background 0.3s ease;
 }
 
-.map-modal-close:hover {
+.mapModalClose:hover {
   background: #0056b3;
 }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .contact-content {
+  .contactContent {
     flex-direction: column;
   }
 
-  .contact-info,
-  .contact-map {
+  .contactInfo,
+  .contactMap {
     width: 100%;
   }
 
-  .map-image {
+  .mapImage {
     height: 300px;
   }
 
-  .map-modal-content {
+  .mapModalContent {
     max-width: 90%;
     padding: 15px;
   }
 }
 
 @media (max-width: 600px) {
-  .contact-hero {
+  .contactHero {
     padding: 60px 15px;
   }
 
-  .contact-hero h1 {
+  .contactHero h1 {
     font-size: 2rem;
   }
 
-  .contact-hero p {
+  .contactHero p {
     font-size: 1rem;
   }
 
-  .contact-info,
-  .contact-map {
+  .contactInfo,
+  .contactMap {
     padding: 20px;
   }
 
-  .contact-info h2,
-  .contact-map h2 {
+  .contactInfo h2,
+  .contactMap h2 {
     font-size: 1.5rem;
   }
 
-  .contact-info p {
+  .contactInfo p {
     font-size: 0.9rem;
   }
 
-  .map-image {
+  .mapImage {
     height: 250px;
   }
 
-  .map-modal-content {
+  .mapModalContent {
     max-width: 95%;
     padding: 10px;
   }
 
-  .map-modal-close {
+  .mapModalClose {
     top: -10px;
     right: -10px;
     width: 25px;

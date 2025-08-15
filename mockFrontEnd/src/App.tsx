@@ -1,17 +1,12 @@
-import React from "react";
-import { Routes, Route, Link } from 'react-router-dom';
-import Home from "./Homepage/Home";
-import About from "./Homepage/About";
-import Contact from "./Homepage/Contact";
-import { DoctorPage } from './Modules/Doctor/components';
+import { Routes, Route } from "react-router-dom";
+import Home from "./Modules/Homepage/components/Home";
+import About from "./Modules/Homepage/components/About";
+import Contact from "./Modules/Homepage/components/Contact";
+import { DoctorPage } from "./Modules/Doctor/components";
 
 function App() {
-
   return (
     <div>
-      <nav>
-        <Link to="/doctors">Doctors</Link>
-      </nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

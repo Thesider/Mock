@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/FeaturesSection.css";
+import styles from "../styles/FeaturesSection.module.css";
 
 const features = [
   {
@@ -42,15 +42,15 @@ const features = [
 
 const FeaturesSection: React.FC = () => {
   return (
-    <section id="about-section" className="features-section">
+    <section id="about-section" className={styles.featuresSection}>
       <h2>Discover how our platform simplifies appointment booking</h2>
-      <p className="subtitle">
+      <p className={styles.subtitle}>
         Enjoy a seamless and efficient booking experience tailored for patients
       </p>
-      <div className="features-grid">
+      <div className={styles.featuresGrid}>
         {features.map((f, index) => (
-          <div key={index} className="feature-card">
-            <div className="feature-icon">{f.icon}</div>
+          <div key={index} className={styles.featureCard}>
+            <div className={styles.featureIcon}>{f.icon}</div>
             <h3>{f.title}</h3>
             <p>{f.description}</p>
           </div>

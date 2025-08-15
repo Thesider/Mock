@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import "../assets/Home.css";
-import FeaturesSection from "../components/FeaturesSection";
+import Header from "./Header";
+import Footer from "./Footer";
+import styles from "../styles/Home.module.css";
+import FeaturesSection from "./FeaturesSection";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,20 +22,20 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Header />
-      <section className="hero">
-        <div className="hero-left">
+      <section className={styles.hero}>
+        <div className={styles.heroLeft}>
           <h1>The complete enterprise scheduling platform for healthcare</h1>
-          <p className="subheading">Patient Engagement made easy</p>
+          <p className={styles.subheading}>Patient Engagement made easy</p>
           <p>
             Working with Hospitals and Clinics we are revolutionising healthcare
             appointments to enable a more efficient patient centered process to
             deliver on growing patient expectations.
           </p>
-          <div className="hero-buttons">
-            <button className="contact-btn" onClick={handleContactClick}>
+          <div className={styles.heroButtons}>
+            <button className={styles.contactBtn} onClick={handleContactClick}>
               📞 Contact us
             </button>
-            <button className="learn-btn" onClick={handleLearnMoreClick}>
+            <button className={styles.learnBtn} onClick={handleLearnMoreClick}>
               Learn More ▼
             </button>
           </div>
