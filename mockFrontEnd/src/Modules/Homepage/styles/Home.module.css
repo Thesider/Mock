@@ -1,4 +1,4 @@
-/* ===== Home.css ===== */
+/* Home.module.css */
 
 .hero {
   display: flex;
@@ -10,14 +10,14 @@
   color: white;
 }
 
-.hero-left {
+.heroLeft {
   max-width: 50%;
   background-color: rgba(0, 50, 100, 0.6);
   padding: 30px;
   border-radius: 10px;
 }
 
-.hero-left h1 {
+.heroLeft h1 {
   font-size: 2.2rem;
   margin-bottom: 15px;
 }
@@ -27,14 +27,14 @@
   margin-bottom: 20px;
 }
 
-.hero-buttons {
+.heroButtons {
   margin-top: 20px;
   display: flex;
   gap: 10px;
 }
 
-.contact-btn,
-.learn-btn {
+.contactBtn,
+.learnBtn {
   padding: 12px 25px;
   border: none;
   border-radius: 5px;
@@ -44,21 +44,21 @@
   transition: all 0.3s ease;
 }
 
-.contact-btn {
+.contactBtn {
   background-color: white;
   color: #000000;
 }
 
-.contact-btn:hover {
+.contactBtn:hover {
   background-color: #ccff00;
 }
 
-.learn-btn {
+.learnBtn {
   background-color: #cee66e;
   color: #000000;
 }
 
-.learn-btn:hover {
+.learnBtn:hover {
   background-color: #ccff00;
 }
 
@@ -70,12 +70,12 @@
     min-height: 400px;
   }
 
-  .hero-left {
+  .heroLeft {
     max-width: 100%;
     padding: 20px;
   }
 
-  .hero-left h1 {
+  .heroLeft h1 {
     font-size: 1.8rem;
   }
 
@@ -83,14 +83,14 @@
     font-size: 1rem;
   }
 
-  .hero-buttons {
+  .heroButtons {
     flex-direction: column;
     align-items: center;
     gap: 15px;
   }
 
-  .contact-btn,
-  .learn-btn {
+  .contactBtn,
+  .learnBtn {
     width: 100%;
     max-width: 300px;
     padding: 10px 20px;
@@ -104,7 +104,7 @@
     min-height: 300px;
   }
 
-  .hero-left h1 {
+  .heroLeft h1 {
     font-size: 1.5rem;
   }
 
@@ -112,8 +112,8 @@
     font-size: 0.9rem;
   }
 
-  .contact-btn,
-  .learn-btn {
+  .contactBtn,
+  .learnBtn {
     font-size: 13px;
     padding: 8px 15px;
   }

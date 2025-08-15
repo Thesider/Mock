@@ -1,33 +1,34 @@
-/* ===== ABOUT PAGE STYLES ===== */
+/* About.module.css */
 
-.about-page {
+/* ===== ABOUT PAGE STYLES ===== */
+.aboutPage {
   font-family: "Segoe UI", sans-serif;
   color: #333;
   background-color: #f9f9f9;
 }
 
 /* ===== Hero Section ===== */
-.about-hero {
+.aboutHero {
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("./images/hospital-bg.jpg") center/cover no-repeat;
+    url("/images/hospital-bg.jpg") center/cover no-repeat;
   color: white;
   text-align: center;
   padding: 130px 20px;
 }
 
-.about-hero h1 {
+.aboutHero h1 {
   font-size: 48px;
   margin-bottom: 20px;
 }
 
-.about-hero p {
+.aboutHero p {
   font-size: 18px;
   max-width: 700px;
   margin: 0 auto;
 }
 
 /* ===== Mission & Vision ===== */
-.mission-vision {
+.missionVision {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -52,7 +53,7 @@
 }
 
 /* ===== Our Story ===== */
-.about-content {
+.aboutContent {
   display: flex;
   align-items: center;
   gap: 40px;
@@ -60,22 +61,22 @@
   background: #f9f9f9;
 }
 
-.about-text {
+.aboutText {
   flex: 1;
 }
 
-.about-text p {
+.aboutText p {
   margin-bottom: 15px;
   line-height: 1.7;
   color: #444;
   font-size: 16px;
 }
 
-.about-image {
+.aboutImage {
   flex: 1;
 }
 
-.about-image img {
+.aboutImage img {
   width: 100%;
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -83,24 +84,24 @@
 }
 
 /* ===== Core Values ===== */
-.core-values {
+.coreValues {
   background-color: #ffffff;
   padding: 60px 20px;
   text-align: center;
 }
 
-.core-values h2 {
+.coreValues h2 {
   color: #1abc9c;
   margin-bottom: 40px;
 }
 
-.values-grid {
+.valuesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
-.value-card {
+.valueCard {
   background: #f0fdfb;
   padding: 20px;
   border-radius: 10px;
@@ -108,39 +109,103 @@
   transition: transform 0.2s ease;
 }
 
-.value-card:hover {
+.valueCard:hover {
   transform: translateY(-5px);
 }
 
-.value-card h3 {
+.valueCard h3 {
   color: #16a085;
   margin-bottom: 10px;
 }
 
 /* ===== Call to Action ===== */
-.about-cta {
+.aboutCta {
   background-color: #1abc9c;
   color: white;
   text-align: center;
   padding: 60px 20px;
 }
 
-.about-cta h2 {
+.aboutCta h2 {
   font-size: 28px;
   margin-bottom: 15px;
 }
 
-.about-cta p {
+.aboutCta p {
   font-size: 16px;
   margin-bottom: 30px;
 }
 
+.contactBtn {
+  background-color: white;
+  color: #1abc9c;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.contactBtn:hover {
+  background-color: #f0f0f0;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .about-hero h1 {
+  .aboutHero h1 {
     font-size: 32px;
   }
-  .about-hero p {
+  .aboutHero p {
     font-size: 16px;
   }
+}
+/* ===== Featured Doctors ===== */
+.featuredDoctors {
+  background-color: #ffffff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.featuredDoctors h2 {
+  color: #1abc9c;
+  margin-bottom: 40px;
+}
+
+.doctorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.doctorCard {
+  background: #f0fdfb;
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid #e1f5f2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctorCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.doctorImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #1abc9c;
+}
+
+.doctorTitle {
+  font-weight: bold;
+  color: #16a085;
+  margin: 5px 0;
+}
+
+.doctorAchievements {
+  font-size: 14px;
+  color: #555;
 }

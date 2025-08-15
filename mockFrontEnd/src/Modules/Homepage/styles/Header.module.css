@@ -1,6 +1,3 @@
-/* ===== Header.css ===== */
-
-/* Navbar chính */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -13,7 +10,6 @@
   z-index: 1000;
 }
 
-/* Logo */
 .logo img {
   height: 70px;
   transition: transform 0.3s ease;
@@ -23,7 +19,6 @@
   transform: scale(1.05);
 }
 
-/* Hamburger button */
 .hamburger {
   display: none;
   background: none;
@@ -34,15 +29,13 @@
   padding: 10px;
 }
 
-/* Navigation */
-.nav-menu {
+.navMenu {
   display: flex;
   gap: 25px;
   align-items: center;
 }
 
-.nav-link,
-.dropdown > .nav-link {
+.navLink {
   text-decoration: none;
   color: #333;
   padding: 8px 14px;
@@ -57,19 +50,16 @@
   position: relative;
 }
 
-.nav-link:hover,
-.dropdown > .nav-link:hover {
+.navLink:hover {
   color: #e0ec34;
 }
 
-.nav-link.active {
+.active {
   color: #e0ec34;
   border-bottom: 2px solid #e0ec34;
 }
 
-/* Hover underline effect */
-.nav-link::after,
-.dropdown > .nav-link::after {
+.navLink::after {
   content: "";
   position: absolute;
   width: 0%;
@@ -80,18 +70,16 @@
   transition: width 0.3s ease;
 }
 
-.nav-link:hover::after,
-.dropdown > .nav-link:hover::after {
+.navLink:hover::after {
   width: 100%;
 }
 
-/* Buttons */
-.nav-buttons {
+.navButtons {
   display: flex;
   gap: 12px;
 }
 
-.nav-buttons button {
+.navButtons button {
   padding: 8px 18px;
   border-radius: 20px;
   border: none;
@@ -101,43 +89,39 @@
   transition: all 0.3s ease;
 }
 
-/* Login Button */
-.login-btn {
+.loginBtn {
   background: white;
   color: #0077b6;
   border: 1px solid transparent;
 }
 
-.login-btn:hover {
+.loginBtn:hover {
   background: transparent;
   border: 1px solid white;
   color: white;
 }
 
-/* Book Appointment Button */
-.book-btn {
+.bookBtn {
   background: #cee66e;
   color: #222;
 }
 
-.book-btn:hover {
+.bookBtn:hover {
   background: #faa307;
   color: white;
 }
 
-/* Icon styling */
-.btn-icon {
+.btnIcon {
   margin-right: 8px;
   font-size: 16px;
   vertical-align: middle;
 }
 
-/* ===== Dropdown container ===== */
 .dropdown {
   position: relative;
 }
 
-.dropdown-content {
+.dropdownContent {
   display: block;
   opacity: 0;
   visibility: hidden;
@@ -154,7 +138,7 @@
   transition: all 0.3s ease;
 }
 
-.dropdown-content a {
+.dropdownContent a {
   display: block;
   padding: 10px 15px;
   text-decoration: none;
@@ -164,18 +148,16 @@
   transition: background 0.3s ease;
 }
 
-.dropdown-content a:hover {
+.dropdownContent a:hover {
   background: #02aad1;
 }
 
-/* Hover to show dropdown with animation */
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdownContent {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;
@@ -186,7 +168,7 @@
     display: block;
   }
 
-  .nav-menu {
+  .navMenu {
     display: none;
     flex-direction: column;
     width: 100%;
@@ -198,18 +180,17 @@
     z-index: 999;
   }
 
-  .nav-menu.open {
+  .open {
     display: flex;
   }
 
-  .nav-link,
-  .dropdown > .nav-link {
+  .navLink {
     width: 100%;
     padding: 10px 0;
     text-align: left;
   }
 
-  .dropdown-content {
+  .dropdownContent {
     position: static;
     background: #f0f0f0;
     box-shadow: none;
@@ -219,14 +200,14 @@
     padding-left: 20px;
   }
 
-  .nav-buttons {
+  .navButtons {
     width: 100%;
     flex-direction: column;
     gap: 10px;
     margin-top: 10px;
   }
 
-  .nav-buttons button {
+  .navButtons button {
     width: 100%;
     text-align: center;
   }
@@ -241,12 +222,11 @@
     padding: 10px 15px;
   }
 
-  .nav-link,
-  .dropdown > .nav-link {
+  .navLink {
     font-size: 14px;
   }
 
-  .nav-buttons button {
+  .navButtons button {
     font-size: 14px;
     padding: 8px 15px;
   }
