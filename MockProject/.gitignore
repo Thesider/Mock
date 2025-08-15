@@ -1,1 +1,10 @@
 appsettings.Development.json
+obj/
+bin/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.sourcelink.json
+MockProject.AssemblyInfo.cs
+MockProject.AssemblyInfoInputs.cache
