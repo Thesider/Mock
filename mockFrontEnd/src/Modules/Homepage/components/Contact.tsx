@@ -6,18 +6,10 @@ import styles from "../styles/Contact.module.css";
 const Contact: React.FC = () => {
   const [isMapZoomed, setIsMapZoomed] = useState(false);
 
-  // Cuộn lên đầu khi trang được render
+  // Scroll lên đầu khi load trang
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleMapClick = () => {
-    setIsMapZoomed(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsMapZoomed(false);
-  };
 
   return (
     <div className={styles.contactPage}>
@@ -55,8 +47,8 @@ const Contact: React.FC = () => {
           </p>
           <div
             className={styles.mapContainer}
-            onClick={handleMapClick}
             style={{ cursor: "zoom-in" }}
+            onClick={() => setIsMapZoomed(true)}
           >
             <img
               src="/images/map.png"
@@ -69,14 +61,23 @@ const Contact: React.FC = () => {
 
       {/* Modal Zoom Map */}
       {isMapZoomed && (
-        <div className={styles.modalOverlay} onClick={handleCloseModal}>
-          <div className={styles.modalContent}>
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setIsMapZoomed(false)}
+        >
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()} // tránh đóng khi click vào ảnh
+          >
             <img
               src="/images/map.png"
               alt="Zoomed map"
               className={styles.zoomedMap}
             />
-            <button className={styles.closeBtn} onClick={handleCloseModal}>
+            <button
+              className={styles.closeBtn}
+              onClick={() => setIsMapZoomed(false)}
+            >
               ✖
             </button>
           </div>
