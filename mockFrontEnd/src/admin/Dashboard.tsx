@@ -29,17 +29,17 @@ import {
   DollarCircleOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import {
-  summaryData as summaryDataMock,
-  bookingChartData,
-  recentBookings,
-  servicePieData,
-  pieColors,
-  calendarBookings,
-  statusColors,
-} from "./mockData";
-import type { BookingItem } from "./mockData";
+
 import styles from "./styles.module.css";
+import {
+  summaryData,
+  bookingChartData,
+  servicePieData,
+  recentBookings,
+  statusColors,
+  pieColors,
+  calendarBookings
+} from "./mockData";
 
 const { Title, Text } = Typography;
 
@@ -51,7 +51,7 @@ interface SummaryCard {
   icon: React.ReactNode;
 }
 
-const summaryCards: SummaryCard[] = summaryDataMock.map((item, index) => {
+const summaryCards: SummaryCard[] = summaryData.map((item, index) => {
   const icons: React.ReactNode[] = [
     <ScheduleOutlined style={{ fontSize: "32px", color: "#1890ff" }} />,
     <CheckCircleOutlined style={{ fontSize: "32px", color: "#52c41a" }} />,

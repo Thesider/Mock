@@ -7,7 +7,7 @@ namespace MockProject.Modules.File
     public class FileValidator : AbstractValidator<FileEntity>
     {
         private static readonly string[] AllowedExtensions = { ".jpg", ".png", ".pdf", ".docx" };
-        private const long MaxFileSize = 1000000000; 
+        private const long MaxFileSize = 1000000000;
 
         public FileValidator()
         {
@@ -18,7 +18,7 @@ namespace MockProject.Modules.File
             RuleFor(f => f.FilePath)
                 .NotEmpty().WithMessage("File path is required.")
                 .MaximumLength(500).WithMessage("File path cannot exceed 500 characters.")
-                .Must(path => !path.Contains("..")).WithMessage("Invalid file path."); 
+                .Must(path => !path.Contains("..")).WithMessage("Invalid file path.");
 
             RuleFor(f => f.Size)
                 .GreaterThan(0).WithMessage("File size must be greater than 0.")
@@ -27,6 +27,10 @@ namespace MockProject.Modules.File
             RuleFor(f => f.FileName)
                 .Must(HaveAllowedExtension)
                 .WithMessage(f => $"File extension '{Path.GetExtension(f.FileName)}' is not allowed.");
+
+            RuleFor(f => f.PatientId)
+                .GreaterThan(0).WithMessage("Patient ID must be greater than 0.")
+                .When(f => f.PatientId.HasValue);
         }
 
         private bool HaveAllowedExtension(string? fileName)

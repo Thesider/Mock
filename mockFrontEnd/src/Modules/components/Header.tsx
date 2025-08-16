@@ -44,7 +44,7 @@ const Header: React.FC = () => {
               List of doctors
             </NavLink>
             <NavLink
-              to="/book"
+              to="/book-appointment"
               className="dropdown-item"
               onClick={() => setIsMenuOpen(false)}
             >

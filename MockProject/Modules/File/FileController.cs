@@ -151,5 +151,185 @@ namespace MockProject.Modules.File
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting the file. {ex.Message}");
             }
         }
+
+        /// Upload file for patient medical records
+        /// axios: const formData = new FormData(); formData.append('file', file); formData.append('patientId', patientId); axios.post('/file/upload', formData)
+        /// curl: curl -X POST http://localhost:5000/file/upload -F "file=@document.pdf" -F "patientId=1"
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file, [FromForm] int patientId)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    _logger.LogWarning("No file provided for upload.");
+                    return BadRequest("No file provided");
+                }
+
+                var fileEntity = await _fileServices.SaveFileAsync(file, patientId);
+                _logger.LogInformation("File {FileName} uploaded successfully with id {Id}", file.FileName, fileEntity.Id);
+
+                return Ok(new
+                {
+                    id = fileEntity.Id,
+                    fileName = fileEntity.FileName,
+                    filePath = fileEntity.FilePath,
+                    size = fileEntity.Size,
+                    uploadedAt = fileEntity.UploadedAt,
+                    patientId = fileEntity.PatientId,
+                    message = "File uploaded successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while uploading the file.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while uploading the file. {ex.Message}");
+            }
+        }
+
+        /// Get files for a specific patient
+        /// axios: axios.get(`/file/patient/${patientId}`)
+        /// curl: curl http://localhost:5000/file/patient/1
+        [HttpGet("patient/{patientId}")]
+        public async Task<IActionResult> GetPatientFiles(int patientId)
+        {
+            try
+            {
+                var files = await _fileServices.GetFilesByPatientIdAsync(patientId);
+                _logger.LogInformation("Retrieved {Count} files for patient {PatientId}", files.Count(), patientId);
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving patient files.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving patient files. {ex.Message}");
+            }
+        }
+
+        /// Download file by ID
+        /// axios: axios.get(`/file/download/${fileId}`, { responseType: 'blob' })
+        /// curl: curl http://localhost:5000/file/download/1 --output downloaded_file
+        [HttpGet("download/{fileId}")]
+        public async Task<IActionResult> DownloadFile(int fileId)
+        {
+            try
+            {
+                var (fileContent, contentType, fileName) = await _fileServices.GetFileContentAsync(fileId);
+                _logger.LogInformation("File {FileName} downloaded successfully", fileName);
+
+                return File(fileContent, contentType, fileName);
+            }
+            catch (FileNotFoundException ex)
+            {
+                _logger.LogWarning("File not found: {Message}", ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while downloading the file.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while downloading the file. {ex.Message}");
+            }
+        }
+
+        /// Preview/View file by ID (inline display)
+        /// axios: axios.get(`/file/preview/${fileId}`)
+        /// curl: curl http://localhost:5000/file/preview/1
+        [HttpGet("preview/{fileId}")]
+        public async Task<IActionResult> PreviewFile(int fileId)
+        {
+            try
+            {
+                var (fileContent, contentType, fileName) = await _fileServices.GetFileContentAsync(fileId);
+                _logger.LogInformation("File {FileName} previewed successfully", fileName);
+
+                // Return file for inline viewing (not as attachment)
+                return File(fileContent, contentType);
+            }
+            catch (FileNotFoundException ex)
+            {
+                _logger.LogWarning("File not found for preview: {Message}", ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while previewing the file.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while previewing the file. {ex.Message}");
+            }
+        }
+
+        /// Get file metadata for review
+        /// axios: axios.get(`/file/info/${fileId}`)
+        /// curl: curl http://localhost:5000/file/info/1
+        [HttpGet("info/{fileId}")]
+        public async Task<IActionResult> GetFileInfo(int fileId)
+        {
+            try
+            {
+                var fileEntity = await _fileServices.GetFileByIdAsync(fileId);
+                if (fileEntity == null)
+                {
+                    _logger.LogWarning("File with id {Id} not found for info.", fileId);
+                    return NotFound();
+                }
+
+                var fileInfo = new
+                {
+                    id = fileEntity.Id,
+                    fileName = fileEntity.FileName,
+                    size = fileEntity.Size,
+                    contentType = fileEntity.ContentType,
+                    uploadedAt = fileEntity.UploadedAt,
+                    patientId = fileEntity.PatientId,
+                    sizeFormatted = FormatFileSize(fileEntity.Size),
+                    canPreview = CanPreviewFile(fileEntity.ContentType),
+                    fileType = GetFileTypeDescription(fileEntity.ContentType)
+                };
+
+                _logger.LogInformation("File info retrieved for {FileName}", fileEntity.FileName);
+                return Ok(fileInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving file info.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving file info. {ex.Message}");
+            }
+        }
+
+        private static string FormatFileSize(long bytes)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB" };
+            double len = bytes;
+            int order = 0;
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len = len / 1024;
+            }
+            return $"{len:0.##} {sizes[order]}";
+        }
+
+        private static bool CanPreviewFile(string? contentType)
+        {
+            if (string.IsNullOrEmpty(contentType)) return false;
+
+            return contentType.StartsWith("image/") ||
+                   contentType == "application/pdf" ||
+                   contentType == "text/plain";
+        }
+
+        private static string GetFileTypeDescription(string? contentType)
+        {
+            return contentType switch
+            {
+                "application/pdf" => "PDF Document",
+                "application/msword" => "Word Document",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => "Word Document",
+                "image/jpeg" => "JPEG Image",
+                "image/jpg" => "JPG Image",
+                "image/png" => "PNG Image",
+                "text/plain" => "Text File",
+                _ => "Unknown File Type"
+            };
+        }
     }
 }

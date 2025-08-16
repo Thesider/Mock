@@ -33,6 +33,14 @@ namespace MockProject.Modules.File
             return await _context.Files.ToListAsync();
         }
 
+        public async Task<IEnumerable<FileEntity>> GetFilesByPatientIdAsync(int patientId)
+        {
+            return await _context.Files
+                .Where(f => f.PatientId == patientId)
+                .OrderByDescending(f => f.UploadedAt)
+                .ToListAsync();
+        }
+
         public async Task UpdateFileAsync(FileEntity file)
         {
             var existingFile = await _context.Files.FindAsync(file.Id);

@@ -10,10 +10,14 @@ namespace MockProject.Modules.Appointment
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IDoctorService _doctorService;
+        private readonly IPatientService _patientService;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService, IDoctorService doctorService, IPatientService patientService)
         {
             _appointmentService = appointmentService;
+            _doctorService = doctorService;
+            _patientService = patientService;
         }
 
         // axios: axios.post('/appointments', appointment)

@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 import { FaUserMd } from "react-icons/fa";
-// Import the background image directly
+import { Login, setAuthToken } from "../../../api/LoginApi";
 import backgroundImage from "/images/backlogin.png";
-
-const mockUser = { email: "doctor@hospital.com", password: "doctor123" };
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -13,33 +11,42 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === mockUser.email && password === mockUser.password) {
+    setLoading(true);
+    setError("");
+
+    try {
+      const authResponse = await Login(email, password);
+
+      setAuthToken(authResponse.token);
+      localStorage.setItem("refreshToken", authResponse.refreshToken);
+      localStorage.setItem("user", JSON.stringify(authResponse.user));
+
       setSuccess(true);
       setError("");
       setShowToast(true);
-      // Save user info to localStorage
-      localStorage.setItem("user", JSON.stringify({ email }));
-      setTimeout(() => {
-        setShowToast(false);
-        navigate("/");
-      }, 1500);
-    } else {
-      setError("Sai tài khoản hoặc mật khẩu.");
+
+      navigate("/");
+
+    } catch (err: any) {
+      console.error("Login error:", err);
+      setError(err.message || "Login failed. Please check your credentials.");
       setSuccess(false);
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.root}>
-      {/* Apply the imported image as an inline background style */}
       <div
         className={styles.background}
         style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -101,8 +108,8 @@ const LoginPage = () => {
                 Forgot password?
               </a>
             </div>
-            <button type="submit" className={styles.loginBtn}>
-              Sign In
+            <button type="submit" className={styles.loginBtn} disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
             </button>
             <button type="button" className={styles.googleBtn}>
               <span

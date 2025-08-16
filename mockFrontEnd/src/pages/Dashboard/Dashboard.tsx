@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
@@ -30,6 +30,20 @@ const ActionCard: React.FC<ActionCardProps> = ({
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("User");
+
+  // Get user name from localStorage
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      try {
+        const parsed = JSON.parse(user);
+        setUserName(parsed.username || parsed.email || "User");
+      } catch {
+        setUserName("User");
+      }
+    }
+  }, []);
 
   const handleBookAppointment = () => {
     navigate("/book-appointment");
@@ -56,7 +70,7 @@ const Dashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="welcome-section">
         <div className="welcome-content">
-          <h1 className="welcome-title">Welcome back, John!</h1>
+          <h1 className="welcome-title">Welcome back, {userName}!</h1>
           <p className="welcome-subtitle">
             Manage your healthcare journey from your personal dashboard
           </p>
@@ -102,13 +116,14 @@ const Dashboard: React.FC = () => {
       <div className="upcoming-section">
         <div className="section-header">
           <h2 className="section-title">Upcoming Appointments</h2>
-          <button className="view-all-btn">View All</button>
+          <button type="button" className="view-all-btn">View All</button>
         </div>
 
         <div className="no-appointments">
           <div className="no-appointments-icon">📅</div>
           <p className="no-appointments-text">No upcoming appointments</p>
           <button
+            type="button"
             className="book-first-btn"
             onClick={handleBookFirstAppointment}
           >

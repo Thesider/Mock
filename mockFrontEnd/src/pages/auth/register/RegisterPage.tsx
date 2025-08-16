@@ -1,28 +1,63 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./RegisterPage.module.css";
 import { FaUserMd } from "react-icons/fa";
+import { Register, setAuthToken } from "../../../api/LoginApi";
 
 const RegisterPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const role = "User";
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    // Validation
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       setSuccess(false);
+      setLoading(false);
       return;
     }
-    if (!email || !password) {
+    if (!username || !password) {
       setError("Please fill all fields.");
       setSuccess(false);
+      setLoading(false);
       return;
     }
-    setSuccess(true);
-    setError("");
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      setSuccess(false);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const authResponse = await Register(username, password, confirmPassword, role);
+
+      setAuthToken(authResponse.token);
+      localStorage.setItem("refreshToken", authResponse.refreshToken);
+      localStorage.setItem("user", JSON.stringify(authResponse.user));
+
+      setSuccess(true);
+      setError("");
+
+      navigate("/");
+
+    } catch (err: any) {
+      console.error("Registration error:", err);
+      setError(err.message || "Registration failed. Please try again.");
+      setSuccess(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,17 +71,19 @@ const RegisterPage = () => {
           </div>
           <h2 className={styles.title}>Register</h2>
           <div className={styles.subtitle}>
-            Join our hospital doctor network
+            Create your patient account
           </div>
           <form className={styles.form} onSubmit={handleRegister}>
-            <div className={styles.formTitle}>Email Address</div>
+            <div className={styles.formTitle}>Username</div>
             <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
+              minLength={3}
             />
+
             <div className={styles.formTitle}>Password</div>
             <input
               type="password"
@@ -54,6 +91,7 @@ const RegisterPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
             />
             <div className={styles.formTitle}>Confirm Password</div>
             <input
@@ -62,13 +100,14 @@ const RegisterPage = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              minLength={6}
             />
             {error && <div className={styles.error}>{error}</div>}
             {success && (
-              <div className={styles.success}>Registration successful!</div>
+              <div className={styles.success}>Registration successful! Redirecting...</div>
             )}
-            <button type="submit" className={styles.registerBtn}>
-              Register
+            <button type="submit" className={styles.registerBtn} disabled={loading}>
+              {loading ? "Registering..." : "Register"}
             </button>
             <div className={styles.signupText}>
               Have an account?

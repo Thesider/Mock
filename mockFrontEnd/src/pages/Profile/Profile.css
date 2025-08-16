@@ -43,6 +43,63 @@
 .profile-bio {
   font-size: 1rem;
   color: #334155;
+  margin-bottom: 20px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.edit-profile-btn, .change-password-btn {
+  background: linear-gradient(135deg, #4f81ff 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-profile-btn:hover, .change-password-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 129, 255, 0.3);
+}
+
+.change-password-btn {
+  background: white;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+.change-password-btn:hover {
+  background: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.error {
+  color: #ef4444;
+}
+
+.error button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 16px;
 }
 .profile {
   max-width: 1000px;
@@ -246,6 +303,30 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
+}
+
+/* New styles for patient profile */
+.medical-textarea {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: vertical;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.medical-textarea:focus {
+  outline: none;
+  border-color: #4f81ff;
+  box-shadow: 0 0 0 3px rgba(79, 129, 255, 0.1);
+}
+
+.incomplete-profile-message {
+  color: #6b7280;
+  margin-bottom: 20px;
+  font-style: italic;
 }
 
 @media (max-width: 768px) {

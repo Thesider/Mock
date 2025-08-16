@@ -1,23 +1,63 @@
-import React from "react";
-import { Card, Table, Tag } from "antd";
-import { mockDoctors } from "../mockData";
+import React, { useState, useEffect } from "react";
+import { Card, Table, Tag, Alert } from "antd";
+import { getAllDoctors } from "../../api/DoctorApi";
+import type { Doctor } from "../../api/DoctorApi";
 
-const columns = [
+const statusColors = {
+  Online: "green",
+  Offline: "red",
+  Busy: "orange",
+};
+
+const columns: any[] = [
   { title: "Doctor ID", dataIndex: "id", key: "id" },
   { title: "Full Name", dataIndex: "name", key: "name" },
   { title: "Specialty", dataIndex: "specialty", key: "specialty" },
-  { title: "Phone", dataIndex: "phone", key: "phone" },
+  { title: "Department", dataIndex: "department", key: "department" },
+  { title: "Phone", dataIndex: "phoneNumber", key: "phoneNumber" },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (s: string) => (
-      <Tag color={s === "Đang làm việc" ? "processing" : "warning"}>{s}</Tag>
+    render: (status: string) => (
+      <Tag color={statusColors[status as keyof typeof statusColors] || "default"}>
+        {status}
+      </Tag>
     ),
   },
 ];
 
 const DoctorsPage: React.FC = () => {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await getAllDoctors();
+        setDoctors(response.data);
+      } catch (err: any) {
+        setError('Failed to fetch doctors');
+        console.error('Error fetching doctors:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+  if (error) {
+    return (
+      <Card title="Doctors" bordered={false}>
+        <Alert message="Error" description={error} type="error" showIcon />
+      </Card>
+    );
+  }
+
   return (
     <Card
       title="Doctors"
@@ -26,9 +66,10 @@ const DoctorsPage: React.FC = () => {
     >
       <Table
         columns={columns}
-        dataSource={mockDoctors}
-        rowKey="id"
-        pagination={{ pageSize: 5 }}
+        dataSource={doctors}
+        rowKey={(record: any) => record.id.toString()}
+        loading={loading}
+        pagination={{ pageSize: 10 }}
       />
     </Card>
   );

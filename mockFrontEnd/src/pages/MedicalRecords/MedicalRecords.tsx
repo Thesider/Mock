@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MedicalRecords.css';
+import { getFiles } from '../../api/FileApi';
+import { getAppointments } from '../../api/AppointmentApi';
+import type { MedicalFile } from '../../api/FileApi';
+import type { Appointment } from '../../api/AppointmentApi';
 
 interface MedicalRecord {
   id: string;
@@ -8,50 +12,100 @@ interface MedicalRecord {
   doctor: string;
   diagnosis: string;
   notes: string;
-  attachments?: string[];
+  attachments?: MedicalFile[];
+  appointmentId?: number;
 }
 
 const MedicalRecords: React.FC = () => {
-  const [records] = useState<MedicalRecord[]>([
-    {
-      id: '1',
-      date: '2025-08-10',
-      type: 'Regular Checkup',
-      doctor: 'Dr. Sarah Johnson',
-      diagnosis: 'Healthy - No issues found',
-      notes: 'Patient in good health. Continue current lifestyle. Next checkup in 6 months.',
-      attachments: ['Blood Test Results.pdf', 'X-Ray Images.pdf']
-    },
-    {
-      id: '2',
-      date: '2025-07-15',
-      type: 'Consultation',
-      doctor: 'Dr. Michael Chen',
-      diagnosis: 'Minor skin irritation',
-      notes: 'Prescribed topical cream. Follow up in 2 weeks if symptoms persist.',
-      attachments: ['Prescription.pdf']
-    }
-  ]);
-
+  const [records, setRecords] = useState<MedicalRecord[]>([]);
+  const [files, setFiles] = useState<MedicalFile[]>([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
+
+  // Fetch data from APIs
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch files and appointments in parallel
+        const [filesResponse, appointmentsResponse] = await Promise.all([
+          getFiles(),
+          getAppointments()
+        ]);
+
+        setFiles(filesResponse.data);
+        setAppointments(appointmentsResponse.data);
+
+        // Create medical records from completed appointments
+        const medicalRecords: MedicalRecord[] = appointmentsResponse.data
+          .filter(apt => apt.status === 'Completed')
+          .map(apt => ({
+            id: apt.id.toString(),
+            date: apt.date,
+            type: apt.description || 'Medical Appointment',
+            doctor: apt.doctor?.name || 'Unknown Doctor',
+            diagnosis: 'Completed appointment', // This would come from a medical records API
+            notes: `Appointment completed on ${new Date(apt.date).toLocaleDateString()}`,
+            attachments: filesResponse.data.filter(file =>
+              file.fileName.toLowerCase().includes('medical') ||
+              file.fileName.toLowerCase().includes('report')
+            ),
+            appointmentId: apt.id
+          }));
+
+        setRecords(medicalRecords);
+
+      } catch (err) {
+        setError('Failed to fetch medical records');
+        console.error('Error fetching medical records:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="medical-records">
+        <div className="loading">Loading medical records...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="medical-records">
+        <div className="error">
+          <p>{error}</p>
+          <button type="button" onClick={() => window.location.reload()}>Retry</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="medical-records">
       <div className="page-header">
         <h1>Medical Records</h1>
-        <button className="request-records-btn">Request Records</button>
+        <button type="button" className="request-records-btn">Request Records</button>
       </div>
 
       <div className="records-container">
         <div className="records-list">
           {records.map(record => (
-            <div 
-              key={record.id} 
+            <div
+              key={record.id}
               className={`record-card ${selectedRecord?.id === record.id ? 'selected' : ''}`}
               onClick={() => setSelectedRecord(record)}
             >
               <div className="record-header">
-                <div className="record-date">{record.date}</div>
+                <div className="record-date">{new Date(record.date).toLocaleDateString()}</div>
                 <div className="record-type">{record.type}</div>
               </div>
               <div className="record-doctor">👨‍⚕️ {record.doctor}</div>
@@ -70,7 +124,7 @@ const MedicalRecords: React.FC = () => {
             <div className="record-detail-content">
               <div className="detail-header">
                 <h2>Record Details</h2>
-                <button className="download-btn">📥 Download</button>
+                <button type="button" className="download-btn">📥 Download</button>
               </div>
 
               <div className="detail-section">
@@ -78,7 +132,7 @@ const MedicalRecords: React.FC = () => {
                 <div className="info-grid">
                   <div className="info-item">
                     <label>Date:</label>
-                    <span>{selectedRecord.date}</span>
+                    <span>{new Date(selectedRecord.date).toLocaleDateString()}</span>
                   </div>
                   <div className="info-item">
                     <label>Type:</label>
@@ -107,10 +161,11 @@ const MedicalRecords: React.FC = () => {
                   <h3>Attachments</h3>
                   <div className="attachments-list">
                     {selectedRecord.attachments.map((attachment, index) => (
-                      <div key={index} className="attachment-item">
+                      <div key={attachment.id || index} className="attachment-item">
                         <span className="attachment-icon">📄</span>
-                        <span className="attachment-name">{attachment}</span>
-                        <button className="attachment-download">📥</button>
+                        <span className="attachment-name">{attachment.fileName}</span>
+                        <span className="attachment-size">({(attachment.size / 1024).toFixed(1)} KB)</span>
+                        <button type="button" className="attachment-download">📥</button>
                       </div>
                     ))}
                   </div>

@@ -33,6 +33,12 @@ namespace MockProject.Modules.Patient
         }
 
         // axios: axios.get(`/Patient/${id}`)
+        [HttpGet]
+        public async Task<IActionResult> GetAllPatients()
+        {
+            var patients = await _patientRepository.GetAllPatientsAsync();
+            return Ok(patients);
+        }
         // curl: curl http://localhost:5000/Patient/1
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetPatientById(int id)

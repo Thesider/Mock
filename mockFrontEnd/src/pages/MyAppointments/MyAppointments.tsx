@@ -1,72 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MyAppointments.css';
-
-interface Appointment {
-  id: string;
-  doctorName: string;
-  specialty: string;
-  date: string;
-  time: string;
-  status: 'upcoming' | 'completed' | 'cancelled';
-  type: string;
-}
+import { getAppointments } from "../../api/AppointmentApi"
+import type { Appointment } from "../../api/AppointmentApi"
 
 const MyAppointments: React.FC = () => {
-  const [appointments] = useState<Appointment[]>([
-    {
-      id: '1',
-      doctorName: 'Dr. Sarah Johnson',
-      specialty: 'Cardiology',
-      date: '2025-08-20',
-      time: '10:00 AM',
-      status: 'upcoming',
-      type: 'Regular Checkup'
-    },
-    {
-      id: '2',
-      doctorName: 'Dr. Michael Chen',
-      specialty: 'Dermatology',
-      date: '2025-08-15',
-      time: '2:30 PM',
-      status: 'completed',
-      type: 'Consultation'
-    }
-  ]);
+  const navigate = useNavigate();
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'Scheduled' | 'Completed' | 'Canceled'>('all');
 
-  const [filter, setFilter] = useState<'all' | 'upcoming' | 'completed' | 'cancelled'>('all');
+  // Fetch appointments from API
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await getAppointments();
+        setAppointments(response.data);
+      } catch (err) {
+        setError('Failed to fetch appointments');
+        console.error('Error fetching appointments:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const filteredAppointments = appointments.filter(apt => 
+    fetchAppointments();
+  }, []);
+
+  const filteredAppointments = appointments.filter(apt =>
     filter === 'all' || apt.status === filter
   );
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'upcoming':
-        return '#10b981';
-      case 'completed':
-        return '#6b7280';
-      case 'cancelled':
-        return '#ef4444';
-      default:
-        return '#6b7280';
-    }
+
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
   };
+
+  const formatTime = (timeString: string) => {
+    return new Date(timeString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  if (loading) {
+    return (
+      <div className="my-appointments">
+        <div className="loading">Loading appointments...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="my-appointments">
+        <div className="error">
+          <p>{error}</p>
+          <button type="button" onClick={() => window.location.reload()}>Retry</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="my-appointments">
       <div className="page-header">
         <h1>My Appointments</h1>
-        <button className="new-appointment-btn">+ Book New Appointment</button>
+        <button type="button" className="new-appointment-btn" onClick={() => navigate("/book-appointment")}>+ Book New Appointment</button>
       </div>
 
       <div className="filters">
-        {['all', 'upcoming', 'completed', 'cancelled'].map(status => (
+        {(['all', 'Scheduled', 'Completed', 'Canceled'] as const).map(status => (
           <button
+            type="button"
             key={status}
             className={`filter-btn ${filter === status ? 'active' : ''}`}
-            onClick={() => setFilter(status as any)}
+            onClick={() => setFilter(status)}
           >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
+            {status === 'all' ? 'All' : status}
           </button>
         ))}
       </div>
@@ -77,37 +89,39 @@ const MyAppointments: React.FC = () => {
             <div className="no-appointments-icon">📅</div>
             <h3>No appointments found</h3>
             <p>You don't have any {filter !== 'all' ? filter : ''} appointments yet.</p>
-            <button className="book-appointment-btn">Book Your First Appointment</button>
+            <button type="button" className="book-appointment-btn" onClick={() => navigate("/book-appointment")}>Book Your First Appointment</button>
           </div>
         ) : (
           filteredAppointments.map(appointment => (
             <div key={appointment.id} className="appointment-card">
               <div className="appointment-info">
                 <div className="appointment-header">
-                  <h3>{appointment.doctorName}</h3>
-                  <span 
-                    className="status-badge"
-                    style={{ backgroundColor: getStatusColor(appointment.status) }}
+                  <h3>{appointment.doctor?.name || 'Unknown Doctor'}</h3>
+                  <span
+                    className={`status-badge status-${appointment.status.toLowerCase()}`}
                   >
                     {appointment.status}
                   </span>
                 </div>
-                <p className="specialty">{appointment.specialty}</p>
-                <p className="appointment-type">{appointment.type}</p>
+                <p className="specialty">{appointment.doctor?.specialty || 'General'}</p>
+                <p className="appointment-type">{appointment.description || 'Appointment'}</p>
                 <div className="appointment-datetime">
-                  <span className="date">📅 {appointment.date}</span>
-                  <span className="time">🕐 {appointment.time}</span>
+                  <span className="date">📅 {formatDate(appointment.date)}</span>
+                  <span className="time">🕐 {formatTime(appointment.startTime)}</span>
                 </div>
+                {appointment.location && (
+                  <p className="location">📍 {appointment.location}</p>
+                )}
               </div>
               <div className="appointment-actions">
-                {appointment.status === 'upcoming' && (
+                {appointment.status === 'Scheduled' && (
                   <>
-                    <button className="action-btn reschedule">Reschedule</button>
-                    <button className="action-btn cancel">Cancel</button>
+                    <button type="button" className="action-btn reschedule">Reschedule</button>
+                    <button type="button" className="action-btn cancel">Cancel</button>
                   </>
                 )}
-                {appointment.status === 'completed' && (
-                  <button className="action-btn view">View Details</button>
+                {appointment.status === 'Completed' && (
+                  <button type="button" className="action-btn view">View Details</button>
                 )}
               </div>
             </div>

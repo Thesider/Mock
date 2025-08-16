@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -17,7 +18,7 @@ const Header: React.FC = () => {
         </NavLink>
       </div>
 
-      <button className={styles.hamburger} onClick={toggleMenu}>
+      <button type="button" className={styles.hamburger} onClick={toggleMenu}>
         {isMenuOpen ? "✖" : "☰"}
       </button>
 
@@ -62,10 +63,10 @@ const Header: React.FC = () => {
       </nav>
 
       <div className={styles.navButtons}>
-        <button className={styles.loginBtn}>
+        <button type="button" className={styles.loginBtn} onClick={() => navigate("/login")}>
           <span className={styles.btnIcon}>🔑</span> Login
         </button>
-        <button className={styles.bookBtn}>
+        <button type="button" className={styles.bookBtn} onClick={() => navigate("/book-appointment")}>
           <span className={styles.btnIcon}>📅</span> Book an Appointment
         </button>
       </div>

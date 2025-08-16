@@ -116,6 +116,47 @@
   text-transform: capitalize;
 }
 
+.status-scheduled {
+  background-color: #10b981;
+}
+
+.status-completed {
+  background-color: #6b7280;
+}
+
+.status-canceled {
+  background-color: #ef4444;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  color: #ef4444;
+}
+
+.error button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.location {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
 .specialty {
   font-size: 14px;
   color: #4f81ff;

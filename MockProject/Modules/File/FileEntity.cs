@@ -7,5 +7,7 @@ namespace MockProject.Modules.File
         public required string FilePath { get; set; }
         public long Size { get; set; }
         public DateTime UploadedAt { get; set; }
+        public int? PatientId { get; set; }
+        public string? ContentType { get; set; }
     }
 }

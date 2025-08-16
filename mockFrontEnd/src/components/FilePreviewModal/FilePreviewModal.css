@@ -1,0 +1,138 @@
+/* File Preview Modal Styles */
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 16px;
+  color: #666;
+}
+
+.file-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.file-preview-container {
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fafafa;
+  margin-top: 8px;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  display: block;
+  background: white;
+}
+
+.preview-pdf {
+  width: 100%;
+  height: 500px;
+  border: none;
+  background: white;
+}
+
+.preview-text {
+  width: 100%;
+  height: 300px;
+  border: none;
+  background: white;
+  font-family: 'Courier New', monospace;
+}
+
+.no-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.no-preview p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.no-preview p:first-of-type {
+  font-weight: 500;
+  color: #333;
+}
+
+/* File type specific styling */
+.file-preview-container.image-preview {
+  text-align: center;
+  padding: 16px;
+}
+
+.file-preview-container.pdf-preview {
+  height: 500px;
+}
+
+.file-preview-container.text-preview {
+  height: 300px;
+  padding: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .preview-pdf {
+    height: 400px;
+  }
+  
+  .preview-text {
+    height: 250px;
+  }
+  
+  .no-preview {
+    padding: 40px 16px;
+  }
+}
+
+/* Ant Design overrides */
+.ant-descriptions-bordered .ant-descriptions-item-label {
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.ant-descriptions-bordered .ant-descriptions-item-content {
+  background: white;
+}
+
+.ant-modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Loading spinner customization */
+.ant-spin-lg .ant-spin-dot {
+  font-size: 32px;
+}
+
+.ant-spin-lg .ant-spin-dot i {
+  width: 22px;
+  height: 22px;
+}

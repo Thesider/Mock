@@ -122,6 +122,23 @@
   box-shadow: 0 0 0 2px #02aad133;
 }
 
+.roleSelect {
+  padding: 0.75rem;
+  border: 1.5px solid #02aad1;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1rem;
+  background: #f6f8fa;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.roleSelect:focus {
+  border-color: #0288a1;
+  box-shadow: 0 0 0 2px #02aad133;
+  outline: none;
+}
+
 .registerBtn {
   background: #02aad1;
   color: #fff;
