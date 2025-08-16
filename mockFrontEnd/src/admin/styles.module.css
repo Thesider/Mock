@@ -1,0 +1,49 @@
+.layoutRoot {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.sider {
+  background: #fff;
+  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.08);
+}
+
+.brand {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.content {
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.pageTitle {
+  color: #1890ff;
+  margin-bottom: 24px !important;
+}
+
+.card {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09) !important;
+}
+
+.section {
+  margin-top: 24px;
+}
+
+.subSection {
+  margin-top: 16px;
+}
+
+.dividerCompact {
+  margin: 8px 0 !important;
+}
+
+.listItem {
+  margin-bottom: 8px;
+}

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { deleteDoctor, editDoctor } from "../../../api/DoctorApi";
-import type { Doctor as DoctorType, Status } from "../../../api/DoctorApi";
-import doctorStyles from "../styles/doctor.module.css";
-import listStyles from "../styles/DoctorList.module.css";
+import React, { useState } from 'react';
+import { deleteDoctor, editDoctor } from '../../../api/DoctorApi';
+import type { Doctor as DoctorType, Status } from '../../../api/DoctorApi';
+import doctorStyles from '../doctor.module.css';
+import listStyles from './DoctorList.module.css';
 interface DoctorListProps {
   doctors: DoctorType[];
   onDoctorUpdated: () => void;
@@ -25,52 +25,40 @@ const DoctorList: React.FC<DoctorListProps> = ({
   onRetry,
 }) => {
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState<Omit<DoctorType, "id">>({
-    name: "",
-    specialty: "",
-    department: "",
+  const [editForm, setEditForm] = useState<Omit<DoctorType, 'id'>>({
+    name: '',
+    specialty: '',
+    department: '',
     phoneNumber: 0,
-    status: "Online",
+    status: 'Online'
   });
-  const [editFormErrors, setEditFormErrors] = useState<
-    Partial<Record<keyof typeof editForm, string>>
-  >({});
+  const [editFormErrors, setEditFormErrors] = useState<Partial<Record<keyof typeof editForm, string>>>({});
 
   // Validation helpers
   const validateField = (name: string, value: any) => {
     switch (name) {
-      case "name":
-      case "specialty":
-      case "department":
-        if (!value || value.trim() === "") return "This field is required";
+      case 'name':
+      case 'specialty':
+      case 'department':
+        if (!value || value.trim() === '') return 'This field is required';
         break;
-      case "phoneNumber":
-        if (!value || isNaN(value) || value <= 0)
-          return "Please enter a valid phone number";
+      case 'phoneNumber':
+        if (!value || isNaN(value) || value <= 0) return 'Please enter a valid phone number';
         break;
-      case "status":
-        if (!["Online", "Offline", "Busy"].includes(value))
-          return "Invalid status selected";
+      case 'status':
+        if (!['Online', 'Offline', 'Busy'].includes(value)) return 'Invalid status selected';
         break;
       default:
         break;
     }
-    return "";
+    return '';
   };
 
   const getStatusBadge = (status: Status) => {
-    const statusClass =
-      status === "Online"
-        ? "statusOnline"
-        : status === "Busy"
-          ? "statusBusy"
-          : "statusOffline";
-    const dotClass =
-      status === "Online"
-        ? "statusDotOnline"
-        : status === "Busy"
-          ? "statusDotBusy"
-          : "statusDotOffline";
+    const statusClass = status === 'Online' ? 'statusOnline' :
+      status === 'Busy' ? 'statusBusy' : 'statusOffline';
+    const dotClass = status === 'Online' ? 'statusDotOnline' :
+      status === 'Busy' ? 'statusDotBusy' : 'statusDotOffline';
 
     return (
       <span className={`statusBadge ${statusClass}`}>
@@ -81,13 +69,13 @@ const DoctorList: React.FC<DoctorListProps> = ({
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this doctor?")) return;
+    if (!window.confirm('Are you sure you want to delete this doctor?')) return;
 
     try {
       await deleteDoctor(id);
       onDoctorUpdated();
     } catch {
-      onError("Failed to delete doctor");
+      onError('Failed to delete doctor');
     }
   };
 
@@ -98,33 +86,26 @@ const DoctorList: React.FC<DoctorListProps> = ({
       specialty: doctor.specialty,
       department: doctor.department,
       phoneNumber: doctor.phoneNumber,
-      status: doctor.status,
+      status: doctor.status
     });
     setEditFormErrors({});
   };
 
-  const handleEditInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditForm((prev) => ({
-      ...prev,
-      [name]: name === "phoneNumber" ? Number(value) : value,
-    }));
-    setEditFormErrors((prev) => ({ ...prev, [name]: "" }));
+    setEditForm(prev => ({ ...prev, [name]: name === 'phoneNumber' ? Number(value) : value }));
+    setEditFormErrors(prev => ({ ...prev, [name]: '' }));
   };
 
-  const handleEditInputBlur = (
-    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleEditInputBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     const errorMsg = validateField(name, value);
-    setEditFormErrors((prev) => ({ ...prev, [name]: errorMsg }));
+    setEditFormErrors(prev => ({ ...prev, [name]: errorMsg }));
   };
 
   const handleEditSave = async (id: number) => {
     const errors: typeof editFormErrors = {};
-    (Object.keys(editForm) as (keyof typeof editForm)[]).forEach((key) => {
+    (Object.keys(editForm) as (keyof typeof editForm)[]).forEach(key => {
       const msg = validateField(key, editForm[key]);
       if (msg) errors[key] = msg;
     });
@@ -136,7 +117,7 @@ const DoctorList: React.FC<DoctorListProps> = ({
       setEditingId(null);
       onDoctorUpdated();
     } catch {
-      onError("Failed to update doctor");
+      onError('Failed to update doctor');
     }
   };
 

@@ -1,0 +1,312 @@
+/* Hospital doctor register background fix */
+* {
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+.registerContainer {
+  min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  font-family: "Poppins", Arial, sans-serif;
+  background: #fff;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/images/backlogin.png");
+  background-size: cover;
+  background-position: left center;
+  z-index: 0;
+  filter: blur(2px) brightness(0.7);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.centerContainer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.card {
+  border-radius: 16px;
+  padding: 40px 32px 32px 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.98);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.logoBox {
+  background: #02aad1;
+  border-radius: 50%;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.title {
+  font-weight: 700 !important;
+  text-align: left !important;
+  font-size: 36px !important;
+  color: #02aad1 !important;
+  margin-bottom: 0 !important;
+}
+
+.subtitle {
+  color: #4b5563 !important;
+  text-align: left !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 28px !important;
+  margin-bottom: 0 !important;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.formTitle {
+  color: #374151 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: normal !important;
+  margin-bottom: 4px !important;
+  margin-top: 20px !important;
+  width: 100%;
+  text-align: left !important;
+}
+.formTitle:first-of-type {
+  margin-top: 0 !important;
+}
+
+.form input {
+  padding: 0.75rem;
+  border: 1.5px solid #02aad1;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1rem;
+  background: #f6f8fa;
+  margin-bottom: 0.5rem;
+}
+.form input:focus {
+  border-color: #0288a1;
+  box-shadow: 0 0 0 2px #02aad133;
+}
+
+.registerBtn {
+  background: #02aad1;
+  color: #fff;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.08rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(2, 170, 209, 0.1);
+  letter-spacing: 0.5px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.registerBtn:hover {
+  background: #0288a1;
+  box-shadow: 0 4px 16px rgba(2, 170, 209, 0.18);
+}
+
+.error {
+  color: #d10202;
+  font-size: 0.95rem;
+  margin-top: -0.5rem;
+  background: #ffeaea;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  text-align: center;
+  border: 1px solid #ffcdd2;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.06);
+}
+
+.success {
+  color: #02aad1;
+  font-size: 0.95rem;
+  margin-top: -0.5rem;
+  background: #e6fafd;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  text-align: center;
+  border: 1px solid #b2ebf2;
+  box-shadow: 0 2px 8px rgba(2, 170, 209, 0.06);
+}
+
+.title {
+  font-weight: 700 !important;
+  text-align: center !important;
+  font-size: 36px !important;
+  color: #02aad1 !important;
+  margin-bottom: 0 !important;
+}
+
+.subtitle {
+  color: #4b5563 !important;
+  text-align: center !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 28px !important;
+  margin-bottom: 0 !important;
+}
+
+.form {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.formTitle {
+  color: #374151 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: normal !important;
+  margin-bottom: 4px !important;
+  margin-top: 20px !important;
+}
+
+.formTitle:first-of-type {
+  margin-top: 0 !important;
+}
+
+.rememberForgot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.socialRow {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.socialIconBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f6f8fa;
+  border: 1.5px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+}
+.socialIconBtn:active,
+.socialIconBtn:focus {
+  box-shadow: 0 0 0 2px #037d5333;
+}
+.socialIconBtn:hover {
+  background: #e5e7eb;
+}
+
+.socialIconBtn.google {
+  color: #ea4335;
+}
+.socialIconBtn.facebook {
+  color: #1877f3;
+}
+
+.signupText {
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.signupLink {
+  color: #02aad1 !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+  text-decoration: none !important;
+  margin-left: 2px;
+}
+.signupLink:hover {
+  text-decoration: underline !important;
+}
+
+.MuiDivider-root {
+  color: #9ca3af !important;
+  font-size: 15px !important;
+  margin: 24px 0 !important;
+}
+
+.MuiInputBase-root {
+  border-radius: 8px !important;
+  background: #f6f8fa !important;
+}
+.MuiInputBase-input {
+  font-size: 16px !important;
+  font-family: "Poppins", Arial, sans-serif !important;
+}
+.MuiFormHelperText-root {
+  font-size: 13px !important;
+  margin-left: 0 !important;
+}
+
+.splitContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.left {
+  width: 60vw;
+  min-width: 300px;
+  height: 100vh;
+  background-image: url("/images/back_login2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.right {
+  width: 40vw;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.98);
+}
