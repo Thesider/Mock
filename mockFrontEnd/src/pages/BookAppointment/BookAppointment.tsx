@@ -67,7 +67,7 @@ const BookAppointment: React.FC = () => {
     { time: '03:30 PM', available: false },
   ];
 
-  const filteredDoctors = selectedSpecialty 
+  const filteredDoctors = selectedSpecialty
     ? doctors.filter(doctor => doctor.specialty === selectedSpecialty)
     : doctors;
 
@@ -88,8 +88,8 @@ const BookAppointment: React.FC = () => {
           <div className="step-number">1</div>
           <div className="step-content">
             <h3>Choose Specialty</h3>
-            <select 
-              value={selectedSpecialty} 
+            <select
+              value={selectedSpecialty}
               onChange={(e) => setSelectedSpecialty(e.target.value)}
               className="specialty-select"
             >
@@ -107,7 +107,7 @@ const BookAppointment: React.FC = () => {
             <h3>Select Doctor</h3>
             <div className="doctors-grid">
               {filteredDoctors.map(doctor => (
-                <div 
+                <div
                   key={doctor.id}
                   className={`doctor-card ${selectedDoctor?.id === doctor.id ? 'selected' : ''}`}
                   onClick={() => setSelectedDoctor(doctor)}
@@ -133,8 +133,8 @@ const BookAppointment: React.FC = () => {
             <div className="step-number">3</div>
             <div className="step-content">
               <h3>Choose Date</h3>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}

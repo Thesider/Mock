@@ -22,12 +22,14 @@ interface SearchDoctorProps {
   onSearch: (query: string, field: string) => void;
   onClear: () => void;
   isSearching: boolean;
+  disabled?: boolean;
 }
 
 const SearchDoctor: React.FC<SearchDoctorProps> = ({
   onSearch,
   onClear,
   isSearching,
+  disabled = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState<
@@ -71,9 +73,9 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({
         <div className={searchStyles.searchInputGroup}>
           <select
             value={searchField}
-            onChange={(e) => setSearchField(e.target.value as any)}
-            className={searchStyles.searchFieldSelect}
+            onChange={(e) => setSearchField(e.target.value as "all" | "name" | "specialty" | "department" | "status")} className={searchStyles.searchFieldSelect}
             aria-label="Search field"
+            disabled={disabled}
           >
             <option value="all">All Fields</option>
             <option value="name">Name</option>
@@ -88,6 +90,7 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             className={searchStyles.searchInput}
             aria-label="Search doctors"
+            disabled={disabled}
           />
           {(searchQuery || isSearching) && (
             <button
@@ -95,6 +98,7 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({
               onClick={handleClear}
               className={searchStyles.clearSearchButton}
               title="Clear search"
+              disabled={disabled}
             >
               {isSearching ? "○" : "×"}
             </button>

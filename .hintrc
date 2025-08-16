@@ -4,12 +4,13 @@
   ],
   "hints": {
     "compat-api/css": [
-      "default",
+      "warning",
       {
         "ignore": [
           "-webkit-text-size-adjust"
         ]
       }
-    ]
+    ],
+    "typescript-config/is-valid": "off"
   }
 }

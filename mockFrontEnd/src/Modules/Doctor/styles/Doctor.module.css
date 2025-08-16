@@ -78,3 +78,151 @@
 .buttonPrimary:hover {
   background-color: #2980b9;
 }
+
+.buttonSecondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.buttonSecondary:hover {
+  background-color: #5a6268;
+}
+
+.buttonSuccess {
+  background-color: #28a745;
+  color: white;
+}
+
+.buttonSuccess:hover {
+  background-color: #218838;
+}
+
+.buttonDanger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.buttonDanger:hover {
+  background-color: #c82333;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button:disabled:hover {
+  background-color: inherit;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Card Styles */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Edit Form Styles */
+.editInput {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.editInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.editSelect {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.editSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.editError {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+}
+
+.editErrorText {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Empty State Styles */
+.emptyState {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #6b7280;
+}
+
+.emptyStateIcon {
+  margin-bottom: 1rem;
+  color: #9ca3af;
+}
+
+.emptyStateTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyStateText {
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+
