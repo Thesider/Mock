@@ -5,6 +5,8 @@ import { addAppointment } from '../../api/AppointmentApi';
 import type { Doctor } from '../../api/DoctorApi';
 import type { CreateAppointmentRequest } from '../../api/AppointmentApi';
 
+
+
 interface TimeSlot {
   time: string;
   available: boolean;

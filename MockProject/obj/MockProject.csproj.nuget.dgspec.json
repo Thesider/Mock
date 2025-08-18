@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Bar\\Desktop\\New folder\\Mock\\MockProject\\MockProject.csproj": {}
+    "C:\\Users\\Admin\\Mock\\MockProject\\MockProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Bar\\Desktop\\New folder\\Mock\\MockProject\\MockProject.csproj": {
+    "C:\\Users\\Admin\\Mock\\MockProject\\MockProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Bar\\Desktop\\New folder\\Mock\\MockProject\\MockProject.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Mock\\MockProject\\MockProject.csproj",
         "projectName": "MockProject",
-        "projectPath": "C:\\Users\\Bar\\Desktop\\New folder\\Mock\\MockProject\\MockProject.csproj",
-        "packagesPath": "C:\\Users\\Bar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Bar\\Desktop\\New folder\\Mock\\MockProject\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\Mock\\MockProject\\MockProject.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\Mock\\MockProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Bar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -45,7 +45,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -101,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -6,7 +6,7 @@ import { Login, setAuthToken } from "../../../api/LoginApi";
 import backgroundImage from "/images/backlogin.png";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -20,7 +20,7 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const authResponse = await Login(email, password);
+      const authResponse = await Login(username, password);
 
       setAuthToken(authResponse.token);
       localStorage.setItem("refreshToken", authResponse.refreshToken);
@@ -80,12 +80,12 @@ const LoginPage = () => {
           <h2 className={styles.title}>Login</h2>
           <div className={styles.subtitle}>Connecting Doctors & Hospitals</div>
           <form className={styles.form} onSubmit={handleLogin}>
-            <div className={styles.formTitle}>Email Address</div>
+            <div className={styles.formTitle}>User name</div>
             <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
             <div className={styles.formTitle}>Password</div>
