@@ -42,7 +42,7 @@
 }
 
 .nav-link,
-.dropdown > .nav-link {
+.dropdown-toggle {
   text-decoration: none;
   color: #333;
   padding: 8px 14px;
@@ -53,23 +53,27 @@
   transition: color 0.3s ease;
   display: inline-flex;
   align-items: center;
-  height: 40px;
+  height: 42px;
   position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .nav-link:hover,
-.dropdown > .nav-link:hover {
+.dropdown-toggle:hover {
   color: #e0ec34;
 }
 
-.nav-link.active {
+.nav-link.active,
+.dropdown-toggle.active {
   color: #e0ec34;
   border-bottom: 2px solid #e0ec34;
 }
 
 /* Hover underline effect */
 .nav-link::after,
-.dropdown > .nav-link::after {
+.dropdown-toggle::after {
   content: "";
   position: absolute;
   width: 0%;
@@ -81,19 +85,24 @@
 }
 
 .nav-link:hover::after,
-.dropdown > .nav-link:hover::after {
+.dropdown-toggle:hover::after {
   width: 100%;
 }
 
 /* Buttons */
 .nav-buttons {
   display: flex;
+  align-items: center; /* 🔥 căn giữa */
   gap: 12px;
 }
 
 .nav-buttons button {
-  padding: 8px 18px;
-  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 21px;
   border: none;
   cursor: pointer;
   font-weight: 500;
@@ -116,13 +125,14 @@
 
 /* Book Appointment Button */
 .book-btn {
-  background: #cee66e;
-  color: #222;
+  background: #20c997;
+  color: #fff;
+  font-weight: 600;
 }
 
 .book-btn:hover {
-  background: #faa307;
-  color: white;
+  background: #17a589;
+  color: #fff;
 }
 
 /* Icon styling */
@@ -132,12 +142,12 @@
   vertical-align: middle;
 }
 
-/* ===== Dropdown container ===== */
-.dropdown {
+/* ===== Services dropdown (hover) ===== */
+.dropdown-service {
   position: relative;
 }
 
-.dropdown-content {
+.dropdown-service .dropdown-content {
   display: block;
   opacity: 0;
   visibility: hidden;
@@ -154,7 +164,7 @@
   transition: all 0.3s ease;
 }
 
-.dropdown-content a {
+.dropdown-service .dropdown-content a {
   display: block;
   padding: 10px 15px;
   text-decoration: none;
@@ -164,95 +174,85 @@
   transition: background 0.3s ease;
 }
 
-.dropdown-content a:hover {
+.dropdown-service .dropdown-content a:hover {
   background: #02aad1;
 }
 
-/* Hover to show dropdown with animation */
-.dropdown:hover .dropdown-content {
+/* Hover để mở Services */
+.dropdown-service:hover .dropdown-content {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* User info styles */
+/* ===== Profile dropdown (click mở) ===== */
 .user-info-wrapper {
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 
 .user-info {
-  font-weight: 700;
-  color: #fff;
-  font-size: 1.08rem;
-  background: #367f2b;
-  padding: 6px 18px;
-  border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(54, 127, 43, 0.1);
-  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  transition: background 0.2s;
+  justify-content: center;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 21px;
+  background: #198754; /* xanh lá hiện đại */
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
+  transition: background 0.25s;
   position: relative;
 }
 
-.user-info:active,
-.user-info:focus {
-  background: #2e6c25;
+.user-info:hover {
+  background: #157347; /* hover sậm hơn */
 }
 
 .user-info .dropdown-arrow {
-  margin-left: 8px;
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  vertical-align: middle;
-  transition: transform 0.2s;
+  margin-left: 6px;
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s;
 }
 
-.user-info-wrapper .user-info:hover,
-.user-info-wrapper .user-info:focus {
-  background: #2e6c25;
-}
-
-.user-info-wrapper .user-info:hover .dropdown-arrow,
-.user-info-wrapper .user-info:focus .dropdown-arrow {
-  transform: translateY(2px) scale(1.1);
-  filter: brightness(0.8);
+.user-info.open .dropdown-arrow {
+  transform: rotate(180deg);
 }
 
 .user-dropdown {
   position: absolute;
   top: 110%;
-  left: 0;
-  min-width: 160px;
+  right: 0;
+  min-width: 190px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(54, 127, 43, 0.18);
-  padding: 8px 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  padding: 6px 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 .dropdown-item {
-  background: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
   border: none;
-  color: #367f2b;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 10px 18px;
+  background: none;
   text-align: left;
   cursor: pointer;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.25s, color 0.25s;
+  border-radius: 6px;
 }
 
 .dropdown-item:hover {
-  background: #e6fafd;
-  color: #145c3a;
+  background: #f1f9ff;
+  color: #0077b6;
 }
 
 /* Responsive */
@@ -283,13 +283,13 @@
   }
 
   .nav-link,
-  .dropdown > .nav-link {
+  .dropdown-toggle {
     width: 100%;
     padding: 10px 0;
     text-align: left;
   }
 
-  .dropdown-content {
+  .dropdown-service .dropdown-content {
     position: static;
     background: #f0f0f0;
     box-shadow: none;
@@ -322,12 +322,20 @@
   }
 
   .nav-link,
-  .dropdown > .nav-link {
+  .dropdown-toggle {
     font-size: 14px;
   }
 
   .nav-buttons button {
     font-size: 14px;
-    padding: 8px 15px;
+    padding: 0 15px;
   }
+}
+.book-btn,
+.user-info {
+  margin: 0 !important; /* ép bỏ margin-top 20px */
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

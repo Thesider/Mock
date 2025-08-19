@@ -1,205 +1,186 @@
-/* Search Doctor Component Styles */
+/* ===== Search Doctor Styles ===== */
 
-/* Search Card */
+/* Card wrapper */
 .searchCard {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-    transition: box-shadow 0.2s ease;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s ease;
 }
 
 .searchCard:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* Search Container */
+/* Container inside card */
 .searchContainer {
-    padding: 1rem 1.5rem;
+  padding: 1rem 1.5rem;
 }
 
-/* Search Input Group */
+/* Flex group for select + input */
 .searchInputGroup {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Updated to 5rem based on your preference */
+  flex-wrap: wrap;
 }
 
-/* Field Selector */
+/* Select box */
 .searchFieldSelect {
-    padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px 0 0 8px;
-    font-size: 0.875rem;
-    background: #f8fafc;
-    color: #374151;
-    border-right: none;
-    min-width: 140px;
-    transition: all 0.2s ease;
-    font-weight: 500;
-}
-
-.searchFieldSelect:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    background: white;
+  height: 44px;
+  padding: 0 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: #f8fafc;
+  color: #374151;
+  min-width: 160px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .searchFieldSelect:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e0;
+  background: #f1f5f9;
+  border-color: #cbd5e0;
 }
 
-/* Search Input */
+.searchFieldSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ===== Input wrapper ===== */
+.searchInputWrapper {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* Input */
 .searchInput {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 0 8px 8px 0;
-    font-size: 0.875rem;
-    transition: all 0.2s ease;
-    background: white;
-    border-left: none;
-    padding-right: 2.5rem; /* Space for clear button */
-}
-
-.searchInput:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  width: 100%;
+  height: 100%;
+  padding: 0 2.5rem 0 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background: #ffffff;
 }
 
 .searchInput:hover {
-    border-color: #cbd5e0;
+  border-color: #cbd5e0;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .searchInput::placeholder {
-    color: #9ca3af;
-    font-style: italic;
+  color: #9ca3af;
+  font-style: italic;
 }
 
-/* Clear Search Button */
+/* Clear button */
 .clearSearchButton {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #6b7280;
-    cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    font-weight: 600;
-    z-index: 1;
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
 }
 
 .clearSearchButton:hover {
-    background: #f3f4f6;
-    color: #374151;
-    transform: translateY(-50%) scale(1.1);
+  background: #f3f4f6;
+  color: #374151;
+  transform: translateY(-50%) scale(1.1);
 }
 
 .clearSearchButton:active {
-    transform: translateY(-50%) scale(0.95);
+  transform: translateY(-50%) scale(0.95);
 }
 
-/* Loading State */
+/* ===== Loading state ===== */
 .searchInputGroup.loading .searchInput {
-    background: #f9fafb;
-    color: #6b7280;
+  background: #f9fafb;
+  color: #6b7280;
 }
 
 .searchInputGroup.loading .searchFieldSelect {
-    background: #f3f4f6;
-    color: #6b7280;
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
-/* Focus States */
-.searchInputGroup:focus-within .searchFieldSelect {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.searchInputGroup:focus-within .searchInput {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Responsive Design */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-    .searchContainer {
-        padding: 1rem;
-    }
+  .searchContainer {
+    padding: 1rem;
+  }
 
-    .searchInputGroup {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+  .searchInputGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .searchFieldSelect {
-        border-radius: 8px;
-        border-right: 2px solid #e2e8f0;
-        min-width: auto;
-        width: 100%;
-        border-bottom: none;
-    }
+  .searchFieldSelect,
+  .searchInputWrapper {
+    width: 100%;
+  }
 
-    .searchInput {
-        border-radius: 8px;
-        border-left: 2px solid #e2e8f0;
-        border-top: none;
-        padding-right: 2.5rem;
-    }
-
-    .clearSearchButton {
-        right: 0.5rem;
-        top: auto;
-        bottom: 0.75rem;
-        transform: none;
-    }
-
-    .clearSearchButton:hover {
-        transform: scale(1.1);
-    }
+  .clearSearchButton {
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
 @media (max-width: 480px) {
-    .searchContainer {
-        padding: 0.75rem;
-    }
+  .searchContainer {
+    padding: 0.75rem;
+  }
 
-    .searchFieldSelect,
-    .searchInput {
-        font-size: 0.8rem;
-        padding: 0.625rem 0.875rem;
-    }
+  .searchFieldSelect,
+  .searchInput {
+    font-size: 0.8rem;
+    padding: 0.625rem 0.875rem;
+  }
 
-    .searchFieldSelect {
-        min-width: 120px;
-    }
+  .searchFieldSelect {
+    min-width: 120px;
+  }
 }
 
-/* Animation for search results */
+/* ===== Animation khi searching ===== */
 @keyframes searchPulse {
-    0% {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-    50% {
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
-    }
-    100% {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
+  0% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+  }
+  100% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .searchCard.searching {
-    animation: searchPulse 1.5s ease-in-out infinite;
+  animation: searchPulse 1.5s ease-in-out infinite;
 }
-
