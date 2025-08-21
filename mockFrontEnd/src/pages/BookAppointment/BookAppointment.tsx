@@ -182,7 +182,13 @@ const BookAppointment: React.FC = () => {
       <div className="book-appointment">
         <div className="page-header">
           <h1>Book Appointment</h1>
+          <p className="page-description">
+            Easily schedule your medical appointments online. Select a
+            specialty, choose a doctor, pick your date and time, and confirm
+            your booking in just a few steps.
+          </p>
         </div>
+
         <div className="booking-steps">
           {/* Step 1: Specialty */}
           <div className="step">

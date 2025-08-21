@@ -10,24 +10,40 @@ body {
   background-size: cover;
 }
 
-/* Page title */
-.page-header h1 {
-  font-size: 32px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 40px;
+/* Page header */
+.page-header {
   text-align: center;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-header h1 {
+  font-size: 36px !important;
+  font-weight: 700;
+  color: #003366 !important;
+  margin-bottom: 16px;
   position: relative;
 }
 
 .page-header h1::after {
   content: "";
   display: block;
-  width: 250px;
+  width: 120px;
   height: 4px;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  background: linear-gradient(90deg, #1c5c9d, #3872ad);
   margin: 12px auto 0;
   border-radius: 2px;
+}
+
+.page-header .page-description {
+  font-size: 16px;
+  color: #494646;
+  line-height: 1.6;
+  max-width: 640px;
+  margin-top: 12px;
 }
 
 /* Steps container */
