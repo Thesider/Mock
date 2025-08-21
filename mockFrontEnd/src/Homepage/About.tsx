@@ -42,9 +42,9 @@ const About: React.FC = () => {
         <div className="about-text">
           <h2>Our Story</h2>
           <p>
-            Founded in 2020, Swiftqueue was born from a simple yet powerful
-            idea: to remove the stress, confusion, and inefficiency that
-            patients often face when booking healthcare appointments.
+            Founded in 2020, Pharmacy was born from a simple yet powerful idea:
+            to remove the stress, confusion, and inefficiency that patients
+            often face when booking healthcare appointments.
           </p>
           <p>
             Our founders saw how long waiting times, missed appointments, and
