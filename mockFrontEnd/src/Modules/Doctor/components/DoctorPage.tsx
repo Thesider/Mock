@@ -33,21 +33,23 @@ const DoctorPage: React.FC = () => {
     <>
       <Header />
       <div className={styles.content}>
-        <div>
-          <div className={styles.header}>
-            <h1 className={styles.headerTitle}>Find a Doctor</h1>
-            <p className={styles.headerSubtitle}>
-              Browse our qualified medical professionals and find the right
-              doctor for your needs
-            </p>
-          </div>
+        <div className={styles.overlay}>
+          <div className={styles.inner}>
+            <div className={styles.header}>
+              <h1 className={styles.headerTitle}>Find a Doctor</h1>
+              <p className={styles.headerSubtitle}>
+                Browse our qualified medical professionals and find the right
+                doctor for your needs
+              </p>
+            </div>
 
-          <DoctorGrid
-            doctors={doctors}
-            loading={loading}
-            error={error}
-            onRetry={fetchDoctors}
-          />
+            <DoctorGrid
+              doctors={doctors}
+              loading={loading}
+              error={error}
+              onRetry={fetchDoctors}
+            />
+          </div>
         </div>
       </div>
       <Footer />

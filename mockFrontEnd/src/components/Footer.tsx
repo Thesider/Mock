@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
               <a href="/">Home</a>
             </li>
             <li>
-              <a href="/services">Services</a>
+              <a href="/book-appointment">Services</a>
             </li>
             <li>
               <a href="/about">About</a>
@@ -51,16 +51,16 @@ const Footer: React.FC = () => {
         <div className="footer-section">
           <h4>Follow Us</h4>
           <div className="footer-socials">
-            <a href="#">
+            <a href="https://www.facebook.com/">
               <FaFacebookF />
             </a>
-            <a href="#">
+            <a href="https://x.com/">
               <FaTwitter />
             </a>
-            <a href="#">
+            <a href="https://www.linkedin.com/">
               <FaLinkedinIn />
             </a>
-            <a href="#">
+            <a href="https://www.instagram.com/">
               <FaInstagram />
             </a>
           </div>

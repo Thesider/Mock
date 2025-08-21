@@ -106,7 +106,6 @@ const About: React.FC = () => {
           Whether you’re a patient, provider, or partner, we welcome you to be
           part of the Pharmacy journey.
         </p>
-        <button className="contact-btn">Get in Touch</button>
       </section>
 
       <Footer />

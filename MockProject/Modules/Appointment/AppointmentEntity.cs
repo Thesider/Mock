@@ -14,7 +14,6 @@ namespace MockProject.Modules.Appointment
         public AppointmentStatus Status { get; set; }
 
         public int DoctorId { get; set; }
-
         public  DoctorEntity? Doctor { get; set; }
     }
 

@@ -1,146 +1,120 @@
+/* ===== Doctor Page ===== */
 .content {
-  width: 100%; /* Mở rộng hết chiều ngang */
-  padding: 2rem; /* Giữ khoảng cách hợp lý với các cạnh */
-  background-color: #fff; /* Đảm bảo nền trắng, khớp với giao diện */
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  /* Background image */
+  background: url("/images/doctor-bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
 }
 
+.overlay {
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* ===== Header ===== */
 .header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
 .headerTitle {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: #003366;
+  margin-bottom: 0.5rem;
 }
 
 .headerSubtitle {
-  font-size: 1rem;
-  color: #7f8c8d;
+  font-size: 1.1rem;
+  color: #494646;
 }
 
-.loadingContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-  width: 100%; /* Mở rộng hết chiều ngang */
-}
-
-.loadingContent {
-  text-align: center;
-}
-
-.loadingText {
-  font-size: 1.2rem;
-  color: #3498db;
-}
-
+/* ===== Loading & Error ===== */
+.loadingContainer,
 .errorContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 300px;
-  width: 100%; /* Mở rộng hết chiều ngang */
+  width: 100%;
 }
 
+.loadingContent,
 .errorContent {
   text-align: center;
+}
+
+.loadingText {
+  font-size: 1.2rem;
+  color: #2563eb;
 }
 
 .errorTitle {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #e74c3c;
+  color: #dc2626;
   margin-bottom: 0.5rem;
 }
 
 .errorMessage {
-  color: #7f8c8d;
+  color: #6b7280;
   margin-bottom: 1rem;
 }
 
+/* ===== Buttons ===== */
 .button {
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .buttonPrimary {
-  background-color: #3498db;
+  background-color: #2563eb;
   color: white;
 }
-
 .buttonPrimary:hover {
-  background-color: #2980b9;
+  background-color: #1d4ed8;
 }
 
-.buttonSecondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.buttonSecondary:hover {
-  background-color: #5a6268;
-}
-
-.buttonSuccess {
-  background-color: #28a745;
-  color: white;
-}
-
-.buttonSuccess:hover {
-  background-color: #218838;
-}
-
-.buttonDanger {
-  background-color: #dc3545;
-  color: white;
-}
-
-.buttonDanger:hover {
-  background-color: #c82333;
-}
-
-.button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.button:disabled:hover {
-  background-color: inherit;
-}
-
-.iconButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-}
-
-.buttonIcon {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-/* Card Styles */
+/* ===== Card Styles ===== */
 .card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   border-bottom: 1px solid #f1f5f9;
   background-color: #f8fafc;
 }
@@ -152,55 +126,7 @@
   margin: 0;
 }
 
-/* Action Buttons */
-.actionButtons {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-/* Edit Form Styles */
-.editInput {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.875rem;
-}
-
-.editInput:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.editSelect {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  background-color: white;
-}
-
-.editSelect:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.editError {
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
-}
-
-.editErrorText {
-  color: #ef4444;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-}
-
-/* Empty State Styles */
+/* ===== Empty State ===== */
 .emptyState {
   text-align: center;
   padding: 3rem 2rem;
@@ -209,6 +135,7 @@
 
 .emptyStateIcon {
   margin-bottom: 1rem;
+  font-size: 2rem;
   color: #9ca3af;
 }
 
@@ -216,13 +143,10 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: #374151;
-  margin: 0 0 0.5rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .emptyStateText {
   color: #6b7280;
   line-height: 1.5;
-  margin: 0;
 }
-
-
