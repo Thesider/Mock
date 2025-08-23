@@ -14,12 +14,12 @@ namespace MockProject.Modules.Patient
             return _patientRepository.AddPatientAsync(patient);
         }
 
-        public Task<PatientEntity> GetPatientByIdAsync(int id)
+        public Task<PatientEntity?> GetPatientByIdAsync(int id)
         {
             return _patientRepository.GetPatientByIdAsync(id);
         }
 
-        public Task<PatientEntity> GetPatientByNameAsync(string name)
+        public Task<PatientEntity?> GetPatientByNameAsync(string name)
         {
             return _patientRepository.GetPatientByNameAsync(name);
         }

@@ -44,6 +44,10 @@ namespace MockProject.Modules.Patient
         public async Task<IActionResult> GetPatientById(int id)
         {
             var patient = await _patientRepository.GetPatientByIdAsync(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
             return Ok(patient);
         }
         // axios: axios.get(`/Patient/by-name/${name}`)
@@ -73,6 +77,13 @@ namespace MockProject.Modules.Patient
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors);
+            }
+
+            // Ensure the patient exists before updating
+            var existing = await _patientRepository.GetPatientByIdAsync(id);
+            if (existing == null)
+            {
+                return NotFound();
             }
 
             await _patientRepository.UpdatePatientAsync(patient);

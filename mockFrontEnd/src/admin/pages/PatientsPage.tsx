@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Alert, Button, Modal, Upload, message, Tooltip } from "antd";
 import { UploadOutlined, EyeOutlined, DownloadOutlined, FileSearchOutlined } from "@ant-design/icons";
-import { getAllPatients } from "../../api/PatientApi";
+import { getAllPatients, deletePatient } from "../../api/PatientApi";
 import { uploadMedicalFile, getPatientFiles, downloadFile } from "../../api/FileApi";
 import type { Patient } from "../../api/PatientApi";
 import type { MedicalFile } from "../../api/FileApi";
@@ -93,6 +93,26 @@ const PatientsPage: React.FC = () => {
     }
   };
 
+  const handleDeletePatient = async (patient: Patient) => {
+    console.log("handleDeletePatient called", patient.id);
+
+    // Use simple browser confirm to avoid Ant Design modal issues
+    const ok = window.confirm(`Delete patient ${patient.name}? This action cannot be undone.`);
+    if (!ok) return;
+
+    try {
+      await deletePatient(patient.id);
+      setPatients(prev => prev.filter(p => p.id !== patient.id));
+      message.success("Patient deleted");
+      if (selectedPatient?.id === patient.id) {
+        setSelectedPatient(null);
+      }
+    } catch (err) {
+      message.error("Failed to delete patient");
+      console.error("Delete error:", err);
+    }
+  };
+
   const handlePreviewFile = (file: MedicalFile) => {
     setSelectedFileId(file.id);
     setPreviewModalVisible(true);
@@ -147,6 +167,19 @@ const PatientsPage: React.FC = () => {
               onClick={() => handleViewFiles(record)}
             >
               View Files
+            </Button>
+          </Tooltip>
+        </div>
+      ),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_: any, record: Patient) => (
+        <div className="actions">
+          <Tooltip title="Delete patient">
+            <Button danger size="small" onClick={() => { console.log('Delete patient clicked', record.id); handleDeletePatient(record); }}>
+              Delete
             </Button>
           </Tooltip>
         </div>

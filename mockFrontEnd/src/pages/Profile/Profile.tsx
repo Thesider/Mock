@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { useLocation } from 'react-router-dom';
 import { GetUserById } from '../../api/UserApi';
-import { getPatientByName, updatePatient, addPatient } from '../../api/PatientApi';
+import { getPatientById, getPatientByName, getAllPatients, updatePatient, addPatient } from '../../api/PatientApi';
 import type { User } from '../../api/UserApi';
 import type { Patient } from '../../api/PatientApi';
 
@@ -15,6 +14,7 @@ const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [editedPatient, setEditedPatient] = useState<Partial<Patient>>({});
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const location = useLocation();
 
   // Fetch user and patient profile from API
@@ -30,17 +30,78 @@ const Profile: React.FC = () => {
         // If navigation state provided user (from registration), use it and skip fetching user by id
         if (navState?.user) {
           const userData = navState.user;
+          const username = (userData as any).username || (userData as any).userName || '';
           setUser(userData);
 
-          // Try to fetch patient data by matching username with patient name
-          let foundPatient = false;
+          // If we have a cached patient for this user, use it first to avoid extra API calls
           try {
-            const patientResponse = await getPatientByName(userData.username);
-            if (patientResponse.data) {
-              foundPatient = true;
-              setPatient(patientResponse.data);
-              setEditedPatient(patientResponse.data);
-            } else {
+            const storedPatient = localStorage.getItem('patient');
+            if (storedPatient) {
+              const parsed = JSON.parse(storedPatient) as Patient;
+              if (parsed && parsed.name === userData.username) {
+                setPatient(parsed);
+                setEditedPatient(parsed);
+                setLoading(false);
+                return;
+              }
+            }
+          } catch (err) {
+            // ignore parse errors
+          }
+
+          // Try to fetch patient data by matching username with patient name (guard if username missing)
+          let foundPatient = false;
+          if (username) {
+            try {
+              let patientResponse;
+              try {
+                // Prefer lookup by user id to reliably find the associated patient record
+                var uid = (userData as any)?.id ?? 0;
+                patientResponse = uid ? await getPatientById(uid) : { data: null };
+              } catch (nameErr) {
+                patientResponse = { data: null };
+              }
+              if (patientResponse && patientResponse.data) {
+                foundPatient = true;
+                setPatient(patientResponse.data);
+                setEditedPatient(patientResponse.data);
+              } else {
+                // fallback: try to match from all patients (handles cases where patient.Name != username)
+                try {
+                  const allResp = await getAllPatients();
+                  const list: Patient[] = allResp.data || [];
+                  const fallback = list.find(p =>
+                    p.name?.toLowerCase().includes(username?.toLowerCase() || '') ||
+                    p.email?.toLowerCase() === (username || '').toLowerCase()
+                  );
+                  if (fallback) {
+                    foundPatient = true;
+                    setPatient(fallback);
+                    setEditedPatient(fallback);
+                  } else {
+                    setPatient(null);
+                    setEditedPatient({
+                      name: username,
+                      dateOfBirth: '',
+                      gender: '',
+                      phoneNumber: '',
+                      email: '',
+                      medicalRecord: ''
+                    });
+                  }
+                } catch (err) {
+                  setPatient(null);
+                  setEditedPatient({
+                    name: userData.username,
+                    dateOfBirth: '',
+                    gender: '',
+                    phoneNumber: '',
+                    email: '',
+                    medicalRecord: ''
+                  });
+                }
+              }
+            } catch (patientErr) {
               setPatient(null);
               setEditedPatient({
                 name: userData.username,
@@ -51,11 +112,10 @@ const Profile: React.FC = () => {
                 medicalRecord: ''
               });
             }
-          } catch (patientErr) {
-            console.log('No patient record found for user, can create new one');
+          } else {
             setPatient(null);
             setEditedPatient({
-              name: userData.username,
+              name: '',
               dateOfBirth: '',
               gender: '',
               phoneNumber: '',
@@ -64,7 +124,13 @@ const Profile: React.FC = () => {
             });
           }
 
+          // If redirected after registration, open edit mode when no patient exists
           if (navState.new && !foundPatient) {
+            setIsEditing(true);
+          }
+
+          // If no patient was found, allow the user to edit (complete) their profile
+          if (!foundPatient) {
             setIsEditing(true);
           }
 
@@ -80,26 +146,86 @@ const Profile: React.FC = () => {
           try {
             const parsed = JSON.parse(userStorage);
             userId = parsed.id || 1;
-          } catch {
-            console.warn('Could not parse user data from localStorage');
+          } catch (err) {
+            console.warn('Could not parse user data from localStorage', err);
           }
         }
 
         // Fetch user data
         const userResponse = await GetUserById(userId);
         const userData = userResponse.data;
+        const username = (userData as any).username || (userData as any).userName || '';
         setUser(userData);
 
-        // Try to fetch patient data by matching username with patient name
-        let foundPatient = false;
+        // If we have a cached patient for this user, use it first to avoid extra API calls
         try {
-          const patientResponse = await getPatientByName(userData.username);
-          if (patientResponse.data) {
-            foundPatient = true;
-            setPatient(patientResponse.data);
-            setEditedPatient(patientResponse.data);
-          } else {
-            // No patient record found, user can create one
+          const storedPatient = localStorage.getItem('patient');
+          if (storedPatient) {
+            const parsed = JSON.parse(storedPatient) as Patient;
+            if (parsed && parsed.name === userData.username) {
+              setPatient(parsed);
+              setEditedPatient(parsed);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (err) {
+          // ignore parse errors
+        }
+
+        // Try to fetch patient data by matching username with patient name (guard if username missing)
+        let foundPatient = false;
+        if (username) {
+          try {
+            let patientResponse;
+            try {
+              // Use the known userId (from localStorage) to fetch the patient record by id
+              const uid = userId ?? 0;
+              patientResponse = uid ? await getPatientById(uid) : { data: null };
+            } catch (nameErr) {
+              patientResponse = { data: null };
+            }
+            if (patientResponse && patientResponse.data) {
+              foundPatient = true;
+              setPatient(patientResponse.data);
+              setEditedPatient(patientResponse.data);
+            } else {
+              try {
+                const allResp = await getAllPatients();
+                const list: Patient[] = allResp.data || [];
+                const fallback = list.find(p =>
+                  p.name?.toLowerCase().includes(username?.toLowerCase() || '') ||
+                  p.email?.toLowerCase() === (username || '').toLowerCase()
+                );
+                if (fallback) {
+                  foundPatient = true;
+                  setPatient(fallback);
+                  setEditedPatient(fallback);
+                } else {
+                  // No patient record found, user can create one
+                  setPatient(null);
+                  setEditedPatient({
+                    name: username,
+                    dateOfBirth: '',
+                    gender: '',
+                    phoneNumber: '',
+                    email: '',
+                    medicalRecord: ''
+                  });
+                }
+              } catch (err) {
+                setPatient(null);
+                setEditedPatient({
+                  name: userData.username,
+                  dateOfBirth: '',
+                  gender: '',
+                  phoneNumber: '',
+                  email: '',
+                  medicalRecord: ''
+                });
+              }
+            }
+          } catch (patientErr) {
             setPatient(null);
             setEditedPatient({
               name: userData.username,
@@ -110,11 +236,11 @@ const Profile: React.FC = () => {
               medicalRecord: ''
             });
           }
-        } catch (patientErr) {
-          console.log('No patient record found for user, can create new one');
+        } else {
+          // No username available — prepare empty patient template so UI doesn't call backend with "undefined"
           setPatient(null);
           setEditedPatient({
-            name: userData.username,
+            name: '',
             dateOfBirth: '',
             gender: '',
             phoneNumber: '',
@@ -127,13 +253,17 @@ const Profile: React.FC = () => {
         if (params.get('new') === 'true' && !foundPatient) {
           setIsEditing(true);
         }
+
+        // If no patient was found, enable edit mode so user can complete profile
+        if (!foundPatient) {
+          setIsEditing(true);
+        }
       } catch (err) {
-        console.error('Error fetching profile:', err);
+        console.error('Profile: Error fetching profile:', err);
         // If fetching fails, allow the user to still complete their profile.
         setError(null);
         setPatient(null);
 
-        // Try to use cached user from localStorage as a fallback so the editor can prefill name
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
           try {
@@ -147,7 +277,7 @@ const Profile: React.FC = () => {
               email: '',
               medicalRecord: ''
             });
-          } catch {
+          } catch (err) {
             setUser(null);
             setEditedPatient({
               name: '',
@@ -170,7 +300,7 @@ const Profile: React.FC = () => {
           });
         }
 
-        // Open editor so user can complete profile even if fetching failed
+        // Allow editing so the user can input their info after a fetch failure
         setIsEditing(true);
       } finally {
         setLoading(false);
@@ -191,7 +321,7 @@ const Profile: React.FC = () => {
       setError(null);
 
       const patientData: Patient = {
-        id: patient?.id || 0,
+        id: (editedPatient as any).id ?? patient?.id ?? 0,
         name: editedPatient.name!,
         dateOfBirth: editedPatient.dateOfBirth!,
         gender: editedPatient.gender!,
@@ -200,20 +330,38 @@ const Profile: React.FC = () => {
         medicalRecord: editedPatient.medicalRecord || ''
       };
 
-      if (patient) {
-        // Update existing patient
+      if (patientData.id && patientData.id > 0) {
+        // Update existing patient (PUT returns 204 No Content). Re-fetch the patient to get current server state.
         await updatePatient(patientData);
-        setPatient(patientData);
+        let updated;
+        try {
+          const getResp = await getPatientById(patientData.id);
+          updated = getResp?.data ?? patientData;
+        } catch (err) {
+          // If re-fetch fails, fall back to the local patientData object
+          updated = patientData;
+        }
+        setPatient(updated);
+        try {
+          localStorage.setItem('patient', JSON.stringify(updated));
+        } catch (err) {
+        }
       } else {
-        // Create new patient
         const response = await addPatient(patientData);
         setPatient(response.data);
+        try {
+          localStorage.setItem('patient', JSON.stringify(response.data));
+        } catch (err) {
+          // ignore storage errors
+        }
       }
 
       setIsEditing(false);
+      setSuccessMessage('Profile saved successfully');
+      setTimeout(() => setSuccessMessage(null), 3000);
     } catch (err: any) {
       setError('Failed to save patient data: ' + (err.message || 'Unknown error'));
-      console.error('Error saving patient data:', err);
+      console.error('Profile: Error saving patient data:', err);
     } finally {
       setSaving(false);
     }
@@ -272,7 +420,24 @@ const Profile: React.FC = () => {
         <h1>My Profile</h1>
         <div className="header-actions">
           {!isEditing ? (
-            <button type="button" className="edit-btn" onClick={() => setIsEditing(true)}>
+            <button
+              type="button"
+              className="edit-btn"
+              onClick={() => {
+                // Ensure form is populated with the current patient when entering edit mode
+                setEditedPatient(
+                  patient ? { ...patient } : {
+                    name: user?.username || '',
+                    dateOfBirth: '',
+                    gender: '',
+                    phoneNumber: '',
+                    email: '',
+                    medicalRecord: ''
+                  }
+                );
+                setIsEditing(true);
+              }}
+            >
               {patient ? 'Edit Profile' : 'Complete Profile'}
             </button>
           ) : (
@@ -291,6 +456,9 @@ const Profile: React.FC = () => {
             </>
           )}
         </div>
+        {successMessage && (
+          <div className="save-success" role="status" aria-live="polite">{successMessage}</div>
+        )}
       </div>
 
       <div className="profile-content">
@@ -310,7 +478,7 @@ const Profile: React.FC = () => {
                   placeholder="Enter your full name"
                 />
               ) : (
-                <span>{patient?.name || user?.username || ''}</span>
+                <span>{patient?.name || ''}</span>
               )}
             </div>
             <div className="info-group">

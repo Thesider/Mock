@@ -1,8 +1,8 @@
 /* eslint-disable */
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Alert, Select, message } from "antd";
-import { getAllDoctors, editDoctor } from "../../api/DoctorApi";
+import { Card, Table, Tag, Alert, Select, message, Button, Modal, Tooltip } from "antd";
+import { getAllDoctors, editDoctor, deleteDoctor } from "../../api/DoctorApi";
 import type { Doctor } from "../../api/DoctorApi";
 
 const statusColors = {
@@ -48,6 +48,46 @@ const DoctorsPage: React.FC = () => {
     }
   };
 
+  const handleDeleteDoctor = async (doctor: Doctor) => {
+    console.log("handleDeleteDoctor called", doctor.id);
+    try {
+      if (Modal && typeof Modal.confirm === "function") {
+        Modal.confirm({
+          title: `Delete doctor ${doctor.name}?`,
+          content: "This action cannot be undone.",
+          okText: "Delete",
+          okType: "danger",
+          onOk: async () => {
+            console.log("Modal.confirm onOk for doctor", doctor.id);
+            try {
+              await deleteDoctor(doctor.id);
+              setDoctors(prev => prev.filter(d => d.id !== doctor.id));
+              message.success("Doctor deleted");
+            } catch (err) {
+              console.error("Failed to delete doctor", err);
+              message.error("Failed to delete doctor");
+            }
+          }
+        });
+        return;
+      }
+    } catch (err) {
+      console.warn("Modal.confirm unavailable, falling back to window.confirm", err);
+    }
+
+    const ok = window.confirm(`Delete doctor ${doctor.name}? This action cannot be undone.`);
+    if (!ok) return;
+
+    try {
+      await deleteDoctor(doctor.id);
+      setDoctors(prev => prev.filter(d => d.id !== doctor.id));
+      message.success("Doctor deleted");
+    } catch (err) {
+      console.error("Failed to delete doctor", err);
+      message.error("Failed to delete doctor");
+    }
+  };
+
   const columns: any[] = [
     { title: "Doctor ID", dataIndex: "id", key: "id" },
     { title: "Full Name", dataIndex: "name", key: "name" },
@@ -69,6 +109,19 @@ const DoctorsPage: React.FC = () => {
             { label: "Busy", value: "Busy" },
           ]}
         />
+      ),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_: any, record: Doctor) => (
+        <div className="actions">
+          <Tooltip title="Delete doctor">
+            <Button danger size="small" onClick={() => { console.log('Delete doctor clicked', record.id); handleDeleteDoctor(record); }}>
+              Delete
+            </Button>
+          </Tooltip>
+        </div>
       ),
     },
   ];

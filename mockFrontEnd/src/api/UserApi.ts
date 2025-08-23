@@ -10,12 +10,12 @@ export interface User {
 
 }
 
-export const AddUser = async (user: User) => AxiosClient.post("/users", user);
+export const AddUser = async (user: User) => AxiosClient.post("/user", user);
 
-export const GetUserById = async (id: number) => AxiosClient.get(`/users/${id}`);
+export const GetUserById = async (id: number) => AxiosClient.get(`/user/${id}`);
 
-export const GetAllUsers = async () => AxiosClient.get("/users");
+export const GetAllUsers = async () => AxiosClient.get("/user");
 
-export const UpdateUser = async (id: number, user: User) => AxiosClient.put(`/users/${id}`, user);
+export const UpdateUser = async (id: number, user: User) => AxiosClient.put(`/user/${id}`, user);
 
-export const DeleteUser = async (id: number) => AxiosClient.delete(`/users/${id}`);
+export const DeleteUser = async (id: number) => AxiosClient.delete(`/user/${id}`);

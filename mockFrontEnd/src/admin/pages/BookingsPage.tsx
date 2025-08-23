@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Alert } from "antd";
-import { getAppointments } from "../../api/AppointmentApi";
+import { Card, Table, Tag, Alert, Button, Modal, Tooltip, message } from "antd";
+import { getAppointments, deleteAppointment } from "../../api/AppointmentApi";
 import { getAllDoctors } from "../../api/DoctorApi";
 import { getAllPatients } from "../../api/PatientApi";
 import type { Appointment } from "../../api/AppointmentApi";
@@ -11,54 +11,87 @@ const statusColors = {
   Canceled: "red",
 };
 
-const columns: any[] = [
-  { title: "Booking ID", dataIndex: "id", key: "id" },
-  {
-    title: "Patient",
-    key: "patient",
-    render: (_: any, record: any) =>
-      record?.patient?.name || record?.patientName || "Unknown patient",
-  },
-  {
-    title: "Doctor",
-    key: "doctor",
-    render: (_: any, record: any) =>
-      record?.doctor?.name || record?.doctorName || "Unknown doctor",
-  },
-  {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
-    render: (date: string) => new Date(date).toLocaleDateString()
-  },
-  {
-    title: "Start Time",
-    dataIndex: "startTime",
-    key: "startTime",
-    render: (time: string) => new Date(time).toLocaleTimeString()
-  },
-  {
-    title: "End Time",
-    dataIndex: "endTime",
-    key: "endTime",
-    render: (time: string) => new Date(time).toLocaleTimeString()
-  },
-  {
-    title: "Status",
-    key: "status",
-    dataIndex: "status",
-    render: (status: string) => (
-      <Tag color={statusColors[status as keyof typeof statusColors] || "default"}>
-        {status}
-      </Tag>
-    ),
-  },
-  { title: "Description", dataIndex: "description", key: "description" },
-  { title: "Location", dataIndex: "location", key: "location" },
-];
 
 const BookingsPage: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+
+  const handleDeleteAppointment = (appointment: Appointment) => {
+    Modal.confirm({
+      title: `Delete booking #${appointment.id}?`,
+      content: "This action cannot be undone.",
+      okText: "Delete",
+      okType: "danger",
+      onOk: async () => {
+        try {
+          await deleteAppointment(appointment.id);
+          setAppointments(prev => prev.filter(a => a.id !== appointment.id));
+          message.success("Booking deleted");
+        } catch (err) {
+          console.error("Failed to delete booking", err);
+          message.error("Failed to delete booking");
+        }
+      }
+    });
+  };
+
+  const columns: any[] = [
+    { title: "Booking ID", dataIndex: "id", key: "id" },
+    {
+      title: "Patient",
+      key: "patient",
+      render: (_: any, record: any) =>
+        record?.patient?.name || record?.patientName || "Unknown patient",
+    },
+    {
+      title: "Doctor",
+      key: "doctor",
+      render: (_: any, record: any) =>
+        record?.doctor?.name || record?.doctorName || "Unknown doctor",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (date: string) => new Date(date).toLocaleDateString()
+    },
+    {
+      title: "Start Time",
+      dataIndex: "startTime",
+      key: "startTime",
+      render: (time: string) => new Date(time).toLocaleTimeString()
+    },
+    {
+      title: "End Time",
+      dataIndex: "endTime",
+      key: "endTime",
+      render: (time: string) => new Date(time).toLocaleTimeString()
+    },
+    {
+      title: "Status",
+      key: "status",
+      dataIndex: "status",
+      render: (status: string) => (
+        <Tag color={statusColors[status as keyof typeof statusColors] || "default"}>
+          {status}
+        </Tag>
+      ),
+    },
+    { title: "Description", dataIndex: "description", key: "description" },
+    { title: "Location", dataIndex: "location", key: "location" },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_: any, record: Appointment) => (
+        <div className="actions">
+          <Tooltip title="Delete booking">
+            <Button danger size="small" onClick={() => { console.log('Delete booking clicked', record.id); handleDeleteAppointment(record); }}>
+              Delete
+            </Button>
+          </Tooltip>
+        </div>
+      ),
+    },
+  ];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [patientsMap, setPatientsMap] = useState<Record<number, string>>({});
@@ -130,6 +163,7 @@ const BookingsPage: React.FC = () => {
       }
     })();
   }, []);
+
 
   if (error) {
     return (

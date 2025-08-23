@@ -19,23 +19,17 @@ namespace MockProject.Modules.Patient
             return _context.SaveChangesAsync();
         }
 
-        public async Task<PatientEntity> GetPatientByIdAsync(int id)
+        public async Task<PatientEntity?> GetPatientByIdAsync(int id)
         {
             var patient = await _context.Patients.FindAsync(id);
-            if (patient == null)
-            {
-                throw new KeyNotFoundException($"Patient with ID {id} not found.");
-            }
+            // Return null when not found; caller should handle NotFound.
             return patient;
         }
 
-        public async Task<PatientEntity> GetPatientByNameAsync(string name)
+        public async Task<PatientEntity?> GetPatientByNameAsync(string name)
         {
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Name == name);
-            if (patient == null)
-            {
-                throw new KeyNotFoundException($"Patient with Name {name} not found.");
-            }
+            // Return null when not found; caller should handle NotFound.
             return patient;
         }
 
@@ -46,7 +40,15 @@ namespace MockProject.Modules.Patient
 
         public async Task UpdatePatientAsync(PatientEntity patient)
         {
-            _context.Patients.Update(patient);
+            var tracked = await _context.Patients.FindAsync(patient.Id);
+            if (tracked == null)
+            {
+                // Nothing to update if the entity doesn't exist
+                return;
+            }
+
+            // Copy incoming values onto the tracked entity to avoid duplicate tracking instances
+            _context.Entry(tracked).CurrentValues.SetValues(patient);
             await _context.SaveChangesAsync();
         }
 
