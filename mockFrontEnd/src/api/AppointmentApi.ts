@@ -38,6 +38,7 @@ export interface Appointment {
 // For creating appointments - match backend AppointmentEntity structure
 export interface CreateAppointmentRequest {
   id: number;
+  patientId: number;
   date: string;
   startTime: string;
   endTime: string;
@@ -58,12 +59,8 @@ export interface CreateAppointmentRequest {
 export const addAppointment = async (appointment: CreateAppointmentRequest) => {
   console.log("Sending appointment request:", appointment);
 
-  // Backend expects request wrapped in appointment object
-  const wrappedRequest = { appointment };
-  console.log("Wrapped request:", wrappedRequest);
-
   try {
-    const response = await AxiosClient.post("/appointments", wrappedRequest);
+    const response = await AxiosClient.post("/appointments", appointment);
     console.log("Appointment created successfully:", response.data);
     return response;
   } catch (error: any) {

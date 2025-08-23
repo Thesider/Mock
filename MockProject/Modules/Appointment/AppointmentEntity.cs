@@ -13,8 +13,11 @@ namespace MockProject.Modules.Appointment
         public string? Location { get; set; }
         public AppointmentStatus Status { get; set; }
 
+        public int PatientId { get; set; }
+        public PatientEntity? Patient { get; set; }
+
         public int DoctorId { get; set; }
-        public  DoctorEntity? Doctor { get; set; }
+        public DoctorEntity? Doctor { get; set; }
     }
 
     public enum AppointmentStatus

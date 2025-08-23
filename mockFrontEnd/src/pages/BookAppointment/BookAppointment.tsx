@@ -101,8 +101,11 @@ const BookAppointment: React.FC = () => {
     }
     setSubmitting(true);
 
+    const currentPatientId = Number(localStorage.getItem("patientId")) || 1;
+
     const appointmentRequest: CreateAppointmentRequest = {
       id: 0,
+      patientId: currentPatientId,
       date: `${selectedDate}T00:00:00`,
       startTime: `${selectedDate}T${selectedTime}:00`,
       endTime: `${selectedDate}T${addMinutes(selectedTime, 30)}:00`,
@@ -110,14 +113,6 @@ const BookAppointment: React.FC = () => {
       location: selectedDoctor.department,
       status: 0, // 0 = Scheduled
       doctorId: selectedDoctor.id,
-      doctor: {
-        id: selectedDoctor.id,
-        name: selectedDoctor.name,
-        specialty: selectedDoctor.specialty,
-        department: selectedDoctor.department,
-        phoneNumber: selectedDoctor.phoneNumber,
-        status: getStatusNumber(selectedDoctor.status),
-      },
     };
 
     try {
@@ -221,9 +216,8 @@ const BookAppointment: React.FC = () => {
                 {filteredDoctors.map((doctor) => (
                   <div
                     key={doctor.id}
-                    className={`doctor-card ${
-                      selectedDoctor?.id === doctor.id ? "selected" : ""
-                    }`}
+                    className={`doctor-card ${selectedDoctor?.id === doctor.id ? "selected" : ""
+                      }`}
                     onClick={() => setSelectedDoctor(doctor)}
                   >
                     <div className="doctor-info">
@@ -269,9 +263,8 @@ const BookAppointment: React.FC = () => {
                     <button
                       type="button"
                       key={slot.time}
-                      className={`time-slot ${
-                        selectedTime === slot.time ? "selected" : ""
-                      } ${!slot.available ? "unavailable" : ""}`}
+                      className={`time-slot ${selectedTime === slot.time ? "selected" : ""
+                        } ${!slot.available ? "unavailable" : ""}`}
                       onClick={() =>
                         slot.available && setSelectedTime(slot.time)
                       }

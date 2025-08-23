@@ -49,7 +49,7 @@ const RegisterPage = () => {
       setSuccess(true);
       setError("");
 
-      navigate("/");
+      navigate("/profile", { state: { new: true, user: authResponse.user } });
 
     } catch (err: any) {
       console.error("Registration error:", err);
