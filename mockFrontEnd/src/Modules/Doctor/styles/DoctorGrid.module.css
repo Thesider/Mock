@@ -1,7 +1,6 @@
 .container {
   width: 100%;
   padding: 1.5rem;
-  background-color: #f8fafc;
   min-height: 100vh;
 }
 
@@ -16,7 +15,7 @@
 
 .searchContainer {
   display: flex;
-  gap: 1rem;
+  gap: 4rem;
   align-items: center;
   margin-bottom: 1rem;
 }
@@ -262,8 +261,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Icons */
@@ -301,24 +304,24 @@
   .container {
     padding: 1rem;
   }
-  
+
   .searchContainer {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .searchInputWrapper {
     max-width: none;
   }
-  
+
   .specialtyFilter {
     min-width: auto;
   }
-  
+
   .grid {
     grid-template-columns: 1fr;
   }
-  
+
   .resultsInfo {
     flex-direction: column;
     gap: 0.5rem;

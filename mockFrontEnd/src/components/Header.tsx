@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaSignInAlt, FaCalendarCheck, FaBars, FaTimes } from "react-icons/fa";
 import { Logout, removeAuthToken } from "../api/LoginApi";
@@ -8,11 +8,13 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const navigate = useNavigate();
 
-  const checkUserAuth = React.useCallback(() => {
+  const dropdownRef = useRef<HTMLDivElement>(null); // ref cho dropdown
+
+  const checkUserAuth = useCallback(() => {
     const user = localStorage.getItem("user");
     if (user) {
       try {
@@ -29,34 +31,38 @@ const Header: React.FC = () => {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkUserAuth();
 
-    // Listen for storage changes (when user logs in from another tab)
-    const handleStorageChange = () => {
-      checkUserAuth();
-    };
+    const handleStorageChange = () => checkUserAuth();
+    const handleAuthEvent = () => checkUserAuth();
 
-    window.addEventListener('storage', handleStorageChange);
-
-    // Listen for custom login/logout events
-    const handleAuthEvent = () => {
-      checkUserAuth();
-    };
-
-    window.addEventListener('userLoggedIn', handleAuthEvent);
-    window.addEventListener('userLoggedOut', handleAuthEvent);
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("userLoggedIn", handleAuthEvent);
+    window.addEventListener("userLoggedOut", handleAuthEvent);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('userLoggedIn', handleAuthEvent);
-      window.removeEventListener('userLoggedOut', handleAuthEvent);
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("userLoggedIn", handleAuthEvent);
+      window.removeEventListener("userLoggedOut", handleAuthEvent);
     };
   }, [checkUserAuth]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // Đóng dropdown khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowProfileDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleLogout = async () => {
     try {
@@ -64,14 +70,13 @@ const Header: React.FC = () => {
       await Logout();
       removeAuthToken();
       setUserEmail(null);
-      setShowDropdown(false);
+      setShowProfileDropdown(false);
       navigate("/login");
     } catch (error) {
       console.error("Logout error:", error);
-      // Even if API call fails, clear local storage and redirect
       removeAuthToken();
       setUserEmail(null);
-      setShowDropdown(false);
+      setShowProfileDropdown(false);
       navigate("/login");
     } finally {
       setLoggingOut(false);
@@ -99,14 +104,11 @@ const Header: React.FC = () => {
           Home
         </NavLink>
 
-        <div className="dropdown">
-          <NavLink
-            to="/services"
-            className="nav-link"
-            onClick={() => setIsMenuOpen(false)}
-          >
+        {/* Services (hover mở) */}
+        <div className="dropdown-service">
+          <button type="button" className="nav-link dropdown-toggle">
             Services
-          </NavLink>
+          </button>
           <div className="dropdown-content">
             <NavLink
               to="/doctors"
@@ -142,15 +144,19 @@ const Header: React.FC = () => {
       </nav>
 
       <div className="nav-buttons">
-        <button type="button" className="book-btn" onClick={() => navigate("/book-appointment")}>
+        <button
+          type="button"
+          className="book-btn"
+          onClick={() => navigate("/book-appointment")}
+        >
           <FaCalendarCheck className="btn-icon" />
           Book an Appointment
         </button>
         {userEmail ? (
-          <div className="user-info-wrapper">
+          <div className="user-info-wrapper" ref={dropdownRef}>
             <div
               className="user-info"
-              onClick={() => setShowDropdown((prev) => !prev)}
+              onClick={() => setShowProfileDropdown((prev) => !prev)}
               tabIndex={0}
               style={{ cursor: "pointer" }}
             >
@@ -167,7 +173,7 @@ const Header: React.FC = () => {
                 </svg>
               </span>
             </div>
-            {showDropdown && (
+            {showProfileDropdown && (
               <div className="user-dropdown">
                 <button
                   type="button"
@@ -204,7 +210,11 @@ const Header: React.FC = () => {
             )}
           </div>
         ) : (
-          <button type="button" onClick={() => navigate("/login")} className="login-btn">
+          <button
+            type="button"
+            onClick={() => navigate("/login")}
+            className="login-btn"
+          >
             <FaSignInAlt className="btn-icon" />
             Login
           </button>

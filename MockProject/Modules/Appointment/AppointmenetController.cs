@@ -41,24 +41,14 @@ namespace MockProject.Modules.Appointment
                 return Conflict("This doctor already has an appointment during the selected time slot.");
             }
 
-            bool patientConflict = appointments.Any(a =>
-                a.PatientId == appointment.PatientId &&
-                ((appointment.StartTime < a.EndTime) && (appointment.EndTime > a.StartTime))
-            );
-            if (patientConflict)
-            {
-                return Conflict("This patient already has an appointment during the selected time slot.");
-            }
 
             await _appointmentService.CreateAppointmentAsync(appointment);
 
             string doctorName = appointment.Doctor?.Name ?? "Unknown";
-            string patientName = appointment.Patient?.Name ?? "Unknown";
 
             var bookedSlot = new BookedSlotDto
             {
-                DoctorName = doctorName,
-                PatientName = patientName,
+                DoctorName = doctorName ?? "Unknown",
                 StartTime = appointment.StartTime,
                 EndTime = appointment.EndTime
             };
