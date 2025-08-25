@@ -31,17 +31,7 @@ const menuItems = [
     icon: <UserOutlined />,
     label: "Patients",
   },
-  {
-    key: "/admin/reports",
-    icon: <ScheduleOutlined />,
-    label: "Reports",
-  },
-  {
-    key: "/admin/settings",
-    icon: <SettingOutlined />,
-    label: "Settings",
-    disabled: true,
-  },
+
 ];
 
 const AdminLayout: React.FC = () => {

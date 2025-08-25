@@ -4,6 +4,7 @@ import { getFiles } from '../../api/FileApi';
 import { getAppointments } from '../../api/AppointmentApi';
 import type { MedicalFile } from '../../api/FileApi';
 import type { Appointment } from '../../api/AppointmentApi';
+import Header from '../../components/Header';
 
 interface MedicalRecord {
   id: string;
@@ -90,98 +91,103 @@ const MedicalRecords: React.FC = () => {
   }
 
   return (
-    <div className="medical-records">
-      <div className="page-header">
-        <h1>Medical Records</h1>
-        <button type="button" className="request-records-btn">Request Records</button>
-      </div>
+    <>
+      <Header />
 
-      <div className="records-container">
-        <div className="records-list">
-          {records.map(record => (
-            <div
-              key={record.id}
-              className={`record-card ${selectedRecord?.id === record.id ? 'selected' : ''}`}
-              onClick={() => setSelectedRecord(record)}
-            >
-              <div className="record-header">
-                <div className="record-date">{new Date(record.date).toLocaleDateString()}</div>
-                <div className="record-type">{record.type}</div>
-              </div>
-              <div className="record-doctor">👨‍⚕️ {record.doctor}</div>
-              <div className="record-diagnosis">{record.diagnosis}</div>
-              {record.attachments && record.attachments.length > 0 && (
-                <div className="attachment-count">
-                  📎 {record.attachments.length} attachment{record.attachments.length > 1 ? 's' : ''}
-                </div>
-              )}
-            </div>
-          ))}
+
+      <div className="medical-records">
+        <div className="page-header">
+          <h1>Medical Records</h1>
+          <button type="button" className="request-records-btn">Request Records</button>
         </div>
 
-        <div className="record-details">
-          {selectedRecord ? (
-            <div className="record-detail-content">
-              <div className="detail-header">
-                <h2>Record Details</h2>
-                <button type="button" className="download-btn">📥 Download</button>
-              </div>
-
-              <div className="detail-section">
-                <h3>Basic Information</h3>
-                <div className="info-grid">
-                  <div className="info-item">
-                    <label>Date:</label>
-                    <span>{new Date(selectedRecord.date).toLocaleDateString()}</span>
-                  </div>
-                  <div className="info-item">
-                    <label>Type:</label>
-                    <span>{selectedRecord.type}</span>
-                  </div>
-                  <div className="info-item">
-                    <label>Doctor:</label>
-                    <span>{selectedRecord.doctor}</span>
-                  </div>
-                  <div className="info-item">
-                    <label>Diagnosis:</label>
-                    <span>{selectedRecord.diagnosis}</span>
-                  </div>
+        <div className="records-container">
+          <div className="records-list">
+            {records.map(record => (
+              <div
+                key={record.id}
+                className={`record-card ${selectedRecord?.id === record.id ? 'selected' : ''}`}
+                onClick={() => setSelectedRecord(record)}
+              >
+                <div className="record-header">
+                  <div className="record-date">{new Date(record.date).toLocaleDateString()}</div>
+                  <div className="record-type">{record.type}</div>
                 </div>
+                <div className="record-doctor">👨‍⚕️ {record.doctor}</div>
+                <div className="record-diagnosis">{record.diagnosis}</div>
+                {record.attachments && record.attachments.length > 0 && (
+                  <div className="attachment-count">
+                    📎 {record.attachments.length} attachment{record.attachments.length > 1 ? 's' : ''}
+                  </div>
+                )}
               </div>
+            ))}
+          </div>
 
-              <div className="detail-section">
-                <h3>Notes</h3>
-                <div className="notes-content">
-                  {selectedRecord.notes}
+          <div className="record-details">
+            {selectedRecord ? (
+              <div className="record-detail-content">
+                <div className="detail-header">
+                  <h2>Record Details</h2>
+                  <button type="button" className="download-btn">📥 Download</button>
                 </div>
-              </div>
 
-              {selectedRecord.attachments && selectedRecord.attachments.length > 0 && (
                 <div className="detail-section">
-                  <h3>Attachments</h3>
-                  <div className="attachments-list">
-                    {selectedRecord.attachments.map((attachment, index) => (
-                      <div key={attachment.id || index} className="attachment-item">
-                        <span className="attachment-icon">📄</span>
-                        <span className="attachment-name">{attachment.fileName}</span>
-                        <span className="attachment-size">({(attachment.size / 1024).toFixed(1)} KB)</span>
-                        <button type="button" className="attachment-download">📥</button>
-                      </div>
-                    ))}
+                  <h3>Basic Information</h3>
+                  <div className="info-grid">
+                    <div className="info-item">
+                      <label>Date:</label>
+                      <span>{new Date(selectedRecord.date).toLocaleDateString()}</span>
+                    </div>
+                    <div className="info-item">
+                      <label>Type:</label>
+                      <span>{selectedRecord.type}</span>
+                    </div>
+                    <div className="info-item">
+                      <label>Doctor:</label>
+                      <span>{selectedRecord.doctor}</span>
+                    </div>
+                    <div className="info-item">
+                      <label>Diagnosis:</label>
+                      <span>{selectedRecord.diagnosis}</span>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="no-selection">
-              <div className="no-selection-icon">📋</div>
-              <h3>Select a record to view details</h3>
-              <p>Click on any medical record from the list to view its complete information.</p>
-            </div>
-          )}
+
+                <div className="detail-section">
+                  <h3>Notes</h3>
+                  <div className="notes-content">
+                    {selectedRecord.notes}
+                  </div>
+                </div>
+
+                {selectedRecord.attachments && selectedRecord.attachments.length > 0 && (
+                  <div className="detail-section">
+                    <h3>Attachments</h3>
+                    <div className="attachments-list">
+                      {selectedRecord.attachments.map((attachment, index) => (
+                        <div key={attachment.id || index} className="attachment-item">
+                          <span className="attachment-icon">📄</span>
+                          <span className="attachment-name">{attachment.fileName}</span>
+                          <span className="attachment-size">({(attachment.size / 1024).toFixed(1)} KB)</span>
+                          <button type="button" className="attachment-download">📥</button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="no-selection">
+                <div className="no-selection-icon">📋</div>
+                <h3>Select a record to view details</h3>
+                <p>Click on any medical record from the list to view its complete information.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
+import Header from '../../components/Header';
 import { useLocation } from 'react-router-dom';
 import { GetUserById, UpdateUser } from '../../api/UserApi';
 import { getPatientById, getPatientByName, getAllPatients, updatePatient, addPatient } from '../../api/PatientApi';
@@ -434,225 +435,237 @@ const Profile: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="profile-container">
-        <div className="loading">Loading profile...</div>
-      </div>
+      <>
+        <Header />
+        <div className="profile-container">
+          <div className="loading">Loading profile...</div>
+        </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="profile-container">
-        <div className="error">
-          <p>{error}</p>
-          <button type="button" onClick={() => window.location.reload()}>Retry</button>
+      <>
+        <Header />
+        <div className="profile-container">
+          <div className="error">
+            <p>{error}</p>
+            <button type="button" onClick={() => window.location.reload()}>Retry</button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!user && !isEditing) {
     return (
-      <div className="profile-container">
-        <div className="error">User not found</div>
-      </div>
+      <>
+        <Header />
+        <div className="profile-container">
+          <div className="error">User not found</div>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="profile">
-      <div className="page-header">
-        <h1>My Profile</h1>
-        <div className="header-actions">
-          {!isEditing ? (
-            <button
-              type="button"
-              className="edit-btn"
-              onClick={() => {
-                // Ensure form is populated with the current patient when entering edit mode
-                setEditedPatient(
-                  patient ? { ...patient } : {
-                    name: user?.username || '',
-                    dateOfBirth: '',
-                    gender: '',
-                    phoneNumber: '',
-                    email: '',
-                    medicalRecord: ''
-                  }
-                );
-                setIsEditing(true);
-              }}
-            >
-              {patient ? 'Edit Profile' : 'Complete Profile'}
-            </button>
-          ) : (
-            <>
+    <>
+      <Header />
+      <div className="profile">
+        <div className="page-header">
+          <h1>My Profile</h1>
+          <div className="header-actions">
+            {!isEditing ? (
               <button
                 type="button"
-                className="save-btn"
-                onClick={handleSave}
-                disabled={saving}
+                className="edit-btn"
+                onClick={() => {
+                  // Ensure form is populated with the current patient when entering edit mode
+                  setEditedPatient(
+                    patient ? { ...patient } : {
+                      name: user?.username || '',
+                      dateOfBirth: '',
+                      gender: '',
+                      phoneNumber: '',
+                      email: '',
+                      medicalRecord: ''
+                    }
+                  );
+                  setIsEditing(true);
+                }}
               >
-                {saving ? 'Saving...' : 'Save Changes'}
+                {patient ? 'Edit Profile' : 'Complete Profile'}
               </button>
-              <button type="button" className="cancel-btn" onClick={handleCancel}>
-                Cancel
-              </button>
-            </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="save-btn"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button type="button" className="cancel-btn" onClick={handleCancel}>
+                  Cancel
+                </button>
+              </>
+            )}
+          </div>
+          {successMessage && (
+            <div className="save-success" role="status" aria-live="polite">{successMessage}</div>
           )}
         </div>
-        {successMessage && (
-          <div className="save-success" role="status" aria-live="polite">{successMessage}</div>
-        )}
-      </div>
 
-      <div className="profile-content">
-        {/* Basic Information Section */}
-        <div className="profile-section">
-          <div className="section-header">
-            <h2>Basic Information</h2>
-          </div>
-          <div className="info-grid">
-            <div className="info-group">
-              <label>Full Name</label>
-              {isEditing ? (
-                <>
-                  <input
-                    type="text"
-                    value={editedPatient.name || ''}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter your full name"
-                  />
-                  {fieldErrors.name && <div className="error">{fieldErrors.name}</div>}
-                </>
-              ) : (
-                <span>{patient?.name || ''}</span>
-              )}
-            </div>
-            <div className="info-group">
-              <label>Date of Birth</label>
-              {isEditing ? (
-                <>
-                  <input
-                    type="date"
-                    value={editedPatient.dateOfBirth ? editedPatient.dateOfBirth.split('T')[0] : ''}
-                    onChange={(e) => handleInputChange('dateOfBirth', e.target.value + 'T00:00:00')}
-                    aria-label="Date of Birth"
-                  />
-                  {fieldErrors.dateOfBirth && <div className="error">{fieldErrors.dateOfBirth}</div>}
-                </>
-              ) : (
-                <span>
-                  {patient?.dateOfBirth
-                    ? new Date(patient.dateOfBirth).toLocaleDateString()
-                    : 'Not provided'
-                  }
-                </span>
-              )}
-            </div>
-            <div className="info-group">
-              <label>Gender</label>
-              {isEditing ? (
-                <>
-                  <select
-                    value={editedPatient.gender || ''}
-                    onChange={(e) => handleInputChange('gender', e.target.value)}
-                    aria-label="Gender"
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  {fieldErrors.gender && <div className="error">{fieldErrors.gender}</div>}
-                </>
-              ) : (
-                <span>{patient?.gender || 'Not provided'}</span>
-              )}
-            </div>
-            <div className="info-group">
-              <label>User Role</label>
-              <span>{user?.role || ''}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Information Section */}
-        <div className="profile-section">
-          <div className="section-header">
-            <h2>Contact Information</h2>
-          </div>
-          <div className="info-grid">
-            <div className="info-group">
-              <label>Phone Number</label>
-              {isEditing ? (
-                <>
-                  <input
-                    type="tel"
-                    value={editedPatient.phoneNumber || ''}
-                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                    placeholder="Enter your phone number"
-                  />
-                  {fieldErrors.phoneNumber && <div className="error">{fieldErrors.phoneNumber}</div>}
-                </>
-              ) : (
-                <span>{patient?.phoneNumber || 'Not provided'}</span>
-              )}
-            </div>
-            <div className="info-group">
-              <label>Email Address</label>
-              {isEditing ? (
-                <>
-                  <input
-                    type="email"
-                    value={editedPatient.email || ''}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    placeholder="Enter your email address"
-                  />
-                  {fieldErrors.email && <div className="error">{fieldErrors.email}</div>}
-                </>
-              ) : (
-                <span>{patient?.email || 'Not provided'}</span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Medical Information Section */}
-        <div className="profile-section">
-          <div className="section-header">
-            <h2>Medical Information</h2>
-          </div>
-          <div className="info-grid">
-            <div className="info-group full-width">
-              <label>Medical Record Notes</label>
-              {isEditing ? (
-                <textarea
-                  className="medical-textarea"
-                  value={editedPatient.medicalRecord || ''}
-                  onChange={(e) => handleInputChange('medicalRecord', e.target.value)}
-                  placeholder="Enter any medical notes, allergies, or important information"
-                  rows={4}
-                />
-              ) : (
-                <span>{patient?.medicalRecord || 'No medical records provided'}</span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {!patient && !isEditing && (
+        <div className="profile-content">
+          {/* Basic Information Section */}
           <div className="profile-section">
             <div className="section-header">
-              <h2>Complete Your Profile</h2>
+              <h2>Basic Information</h2>
             </div>
-            <p className="incomplete-profile-message">
-              You haven't completed your patient profile yet. Click "Complete Profile" above to add your medical information.
-            </p>
+            <div className="info-grid">
+              <div className="info-group">
+                <label>Full Name</label>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editedPatient.name || ''}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      placeholder="Enter your full name"
+                    />
+                    {fieldErrors.name && <div className="error">{fieldErrors.name}</div>}
+                  </>
+                ) : (
+                  <span>{patient?.name || ''}</span>
+                )}
+              </div>
+              <div className="info-group">
+                <label>Date of Birth</label>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="date"
+                      value={editedPatient.dateOfBirth ? editedPatient.dateOfBirth.split('T')[0] : ''}
+                      onChange={(e) => handleInputChange('dateOfBirth', e.target.value + 'T00:00:00')}
+                      aria-label="Date of Birth"
+                    />
+                    {fieldErrors.dateOfBirth && <div className="error">{fieldErrors.dateOfBirth}</div>}
+                  </>
+                ) : (
+                  <span>
+                    {patient?.dateOfBirth
+                      ? new Date(patient.dateOfBirth).toLocaleDateString()
+                      : 'Not provided'
+                    }
+                  </span>
+                )}
+              </div>
+              <div className="info-group">
+                <label>Gender</label>
+                {isEditing ? (
+                  <>
+                    <select
+                      value={editedPatient.gender || ''}
+                      onChange={(e) => handleInputChange('gender', e.target.value)}
+                      aria-label="Gender"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    {fieldErrors.gender && <div className="error">{fieldErrors.gender}</div>}
+                  </>
+                ) : (
+                  <span>{patient?.gender || 'Not provided'}</span>
+                )}
+              </div>
+              <div className="info-group">
+                <label>User Role</label>
+                <span>{user?.role || ''}</span>
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* Contact Information Section */}
+          <div className="profile-section">
+            <div className="section-header">
+              <h2>Contact Information</h2>
+            </div>
+            <div className="info-grid">
+              <div className="info-group">
+                <label>Phone Number</label>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="tel"
+                      value={editedPatient.phoneNumber || ''}
+                      onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                      placeholder="Enter your phone number"
+                    />
+                    {fieldErrors.phoneNumber && <div className="error">{fieldErrors.phoneNumber}</div>}
+                  </>
+                ) : (
+                  <span>{patient?.phoneNumber || 'Not provided'}</span>
+                )}
+              </div>
+              <div className="info-group">
+                <label>Email Address</label>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="email"
+                      value={editedPatient.email || ''}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      placeholder="Enter your email address"
+                    />
+                    {fieldErrors.email && <div className="error">{fieldErrors.email}</div>}
+                  </>
+                ) : (
+                  <span>{patient?.email || 'Not provided'}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Medical Information Section */}
+          <div className="profile-section">
+            <div className="section-header">
+              <h2>Medical Information</h2>
+            </div>
+            <div className="info-grid">
+              <div className="info-group full-width">
+                <label>Medical Record Notes</label>
+                {isEditing ? (
+                  <textarea
+                    className="medical-textarea"
+                    value={editedPatient.medicalRecord || ''}
+                    onChange={(e) => handleInputChange('medicalRecord', e.target.value)}
+                    placeholder="Enter any medical notes, allergies, or important information"
+                    rows={4}
+                  />
+                ) : (
+                  <span>{patient?.medicalRecord || 'No medical records provided'}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {!patient && !isEditing && (
+            <div className="profile-section">
+              <div className="section-header">
+                <h2>Complete Your Profile</h2>
+              </div>
+              <p className="incomplete-profile-message">
+                You haven't completed your patient profile yet. Click "Complete Profile" above to add your medical information.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

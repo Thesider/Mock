@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './CheckIn.css';
+import Header from '../../components/Header';
 import { getAppointmentById, getAppointments } from '../../api/AppointmentApi';
 import type { Appointment } from '../../api/AppointmentApi';
 
@@ -78,83 +79,86 @@ const CheckIn: React.FC = () => {
   };
 
   return (
-    <div className="checkin">
-      <div className="page-header">
-        <h1>Check-in</h1>
-      </div>
+    <>
+      <Header />
+      <div className="checkin">
+        <div className="page-header">
+          <h1>Check-in</h1>
+        </div>
 
-      <div className="checkin-content">
-        <div className="checkin-card">
-          <div className="checkin-icon">🏥</div>
-          <h2>Check-in for Your Appointment</h2>
-          <p>Use this feature when you arrive at the clinic for your scheduled appointment.</p>
+        <div className="checkin-content">
+          <div className="checkin-card">
+            <div className="checkin-icon">🏥</div>
+            <h2>Check-in for Your Appointment</h2>
+            <p>Use this feature when you arrive at the clinic for your scheduled appointment.</p>
 
-          <div className="checkin-form">
-            <div className="form-group">
-              <label>Appointment ID or Phone Number</label>
-              <input
-                type="text"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                placeholder="Enter appointment ID or phone number"
-                className="checkin-input"
-                disabled={loading || checkedIn}
-              />
+            <div className="checkin-form">
+              <div className="form-group">
+                <label>Appointment ID or Phone Number</label>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder="Enter appointment ID or phone number"
+                  className="checkin-input"
+                  disabled={loading || checkedIn}
+                />
+              </div>
+
+              {!checkedIn ? (
+                <button
+                  className="checkin-btn"
+                  onClick={handleCheckIn}
+                  disabled={loading}
+                >
+                  {loading ? 'Checking...' : 'Check In'}
+                </button>
+              ) : (
+                <button
+                  className="checkin-btn"
+                  onClick={handleReset}
+                >
+                  New Check-in
+                </button>
+              )}
             </div>
 
-            {!checkedIn ? (
-              <button
-                className="checkin-btn"
-                onClick={handleCheckIn}
-                disabled={loading}
-              >
-                {loading ? 'Checking...' : 'Check In'}
-              </button>
-            ) : (
-              <button
-                className="checkin-btn"
-                onClick={handleReset}
-              >
-                New Check-in
-              </button>
+            {error && (
+              <div className="checkin-error" style={{ color: 'red', marginTop: 12 }}>
+                {error}
+              </div>
             )}
+
+            {checkedIn && appointment && (
+              <div className="checkin-success" style={{ marginTop: 16, border: '1px solid #2ecc71', padding: 12, borderRadius: 6, background: '#ebf9f0' }}>
+                <h3 style={{ color: '#2c7a3e' }}>Checked in successfully</h3>
+                <p><strong>Appointment ID:</strong> {appointment.id}</p>
+                <p><strong>Patient:</strong> {appointment.patient?.name ?? 'Unknown'}</p>
+                <p><strong>Doctor:</strong> {appointment.doctor?.name ?? 'TBD'}</p>
+                <p><strong>Date:</strong> {new Date(appointment.date).toLocaleDateString()}</p>
+                <p><strong>Time:</strong> {appointment.startTime} - {appointment.endTime}</p>
+                <p style={{ marginTop: 8 }}>Please take a seat in the waiting area. A staff member will call you when it's your turn.</p>
+              </div>
+            )}
+
+            <div className="checkin-help" style={{ marginTop: 12 }}>
+              <p>Need help? Contact reception at <strong>(555) 123-4567</strong></p>
+            </div>
           </div>
 
-          {error && (
-            <div className="checkin-error" style={{ color: 'red', marginTop: 12 }}>
-              {error}
-            </div>
-          )}
-
-          {checkedIn && appointment && (
-            <div className="checkin-success" style={{ marginTop: 16, border: '1px solid #2ecc71', padding: 12, borderRadius: 6, background: '#ebf9f0' }}>
-              <h3 style={{ color: '#2c7a3e' }}>Checked in successfully</h3>
-              <p><strong>Appointment ID:</strong> {appointment.id}</p>
-              <p><strong>Patient:</strong> {appointment.patient?.name ?? 'Unknown'}</p>
-              <p><strong>Doctor:</strong> {appointment.doctor?.name ?? 'TBD'}</p>
-              <p><strong>Date:</strong> {new Date(appointment.date).toLocaleDateString()}</p>
-              <p><strong>Time:</strong> {appointment.startTime} - {appointment.endTime}</p>
-              <p style={{ marginTop: 8 }}>Please take a seat in the waiting area. A staff member will call you when it's your turn.</p>
-            </div>
-          )}
-
-          <div className="checkin-help" style={{ marginTop: 12 }}>
-            <p>Need help? Contact reception at <strong>(555) 123-4567</strong></p>
+          <div className="instructions">
+            <h3>Check-in Instructions</h3>
+            <ol>
+              <li>Arrive at least 15 minutes before your appointment</li>
+              <li>Enter your appointment ID or phone number</li>
+              <li>Click "Check In" to notify the staff</li>
+              <li>Take a seat in the waiting area</li>
+              <li>You will be called when the doctor is ready</li>
+            </ol>
           </div>
-        </div>
-
-        <div className="instructions">
-          <h3>Check-in Instructions</h3>
-          <ol>
-            <li>Arrive at least 15 minutes before your appointment</li>
-            <li>Enter your appointment ID or phone number</li>
-            <li>Click "Check In" to notify the staff</li>
-            <li>Take a seat in the waiting area</li>
-            <li>You will be called when the doctor is ready</li>
-          </ol>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

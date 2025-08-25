@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
+import Header from "../../components/Header";
 import { getAppointments } from "../../api/AppointmentApi";
 import type { Appointment } from "../../api/AppointmentApi";
 
@@ -177,64 +178,67 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="dashboard">
-      {/* Welcome Section */}
-      <div className="welcome-section">
-        <div className="welcome-content">
-          <h1 className="welcome-title">Welcome back, {userName}!</h1>
-          <p className="welcome-subtitle">
-            Manage your healthcare journey from your personal dashboard
-          </p>
-        </div>
-      </div>
-
-      {/* Action Cards */}
-      <div className="action-cards">
-        <ActionCard
-          icon="+"
-          title="Book Appointment"
-          description="Schedule a new appointment"
-          color="blue"
-          onClick={handleBookAppointment}
-        />
-
-        <ActionCard
-          icon="📋"
-          title="View Records"
-          description="Access medical records"
-          color="green"
-          onClick={handleViewRecords}
-        />
-
-        <ActionCard
-          icon="👤"
-          title="Update Profile"
-          description="Manage your information"
-          color="purple"
-          onClick={handleUpdateProfile}
-        />
-
-        <ActionCard
-          icon="🕐"
-          title="Check-in"
-          description="Check in for your appointment"
-          color="orange"
-          onClick={handleCheckIn}
-        />
-      </div>
-
-      {/* Upcoming Appointments Section */}
-      <div className="upcoming-section">
-        <div className="section-header">
-          <h2 className="section-title">Upcoming Appointments</h2>
-          <button type="button" className="view-all-btn">View All</button>
+    <>
+      <Header />
+      <div className="dashboard">
+        {/* Welcome Section */}
+        <div className="welcome-section">
+          <div className="welcome-content">
+            <h1 className="welcome-title">Welcome back, {userName}!</h1>
+            <p className="welcome-subtitle">
+              Manage your healthcare journey from your personal dashboard
+            </p>
+          </div>
         </div>
 
-        <UpcomingAppointments
-          onBookFirst={handleBookFirstAppointment}
-        />
+        {/* Action Cards */}
+        <div className="action-cards">
+          <ActionCard
+            icon="+"
+            title="Book Appointment"
+            description="Schedule a new appointment"
+            color="blue"
+            onClick={handleBookAppointment}
+          />
+
+          <ActionCard
+            icon="📋"
+            title="View Records"
+            description="Access medical records"
+            color="green"
+            onClick={handleViewRecords}
+          />
+
+          <ActionCard
+            icon="👤"
+            title="Update Profile"
+            description="Manage your information"
+            color="purple"
+            onClick={handleUpdateProfile}
+          />
+
+          <ActionCard
+            icon="🕐"
+            title="Check-in"
+            description="Check in for your appointment"
+            color="orange"
+            onClick={handleCheckIn}
+          />
+        </div>
+
+        {/* Upcoming Appointments Section */}
+        <div className="upcoming-section">
+          <div className="section-header">
+            <h2 className="section-title">Upcoming Appointments</h2>
+            <button type="button" className="view-all-btn">View All</button>
+          </div>
+
+          <UpcomingAppointments
+            onBookFirst={handleBookFirstAppointment}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
