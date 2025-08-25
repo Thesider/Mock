@@ -281,6 +281,61 @@ body {
 }
 
 /* Responsive */
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.2);
+  text-align: center;
+  transform: translateY(0);
+}
+
+.modal h2 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #0f172a;
+}
+
+.modal-message {
+  font-size: 15px;
+  color: #374151;
+  margin: 8px 0 12px 0;
+}
+
+.modal-id {
+  font-size: 15px;
+  color: #111827;
+  margin: 4px 0 16px 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Make modal button visually consistent with primary CTA */
+.modal .book-btn {
+  max-width: 160px;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .step {
     flex-direction: column;

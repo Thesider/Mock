@@ -10,31 +10,28 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const role = "User";
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{ username?: string; password?: string; confirmPassword?: string }>({});
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const validateAll = () => {
+    const errs: { [k: string]: string } = {};
+    if (!username || username.trim().length < 3) errs.username = "Username must be at least 3 characters.";
+    if (!password || password.length < 6) errs.password = "Password must be at least 6 characters.";
+    if (password !== confirmPassword) errs.confirmPassword = "Passwords do not match.";
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess(false);
+    setFieldErrors({});
 
-    // Validation
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      setSuccess(false);
-      setLoading(false);
-      return;
-    }
-    if (!username || !password) {
-      setError("Please fill all fields.");
-      setSuccess(false);
-      setLoading(false);
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
-      setSuccess(false);
+    if (!validateAll()) {
       setLoading(false);
       return;
     }
@@ -83,6 +80,7 @@ const RegisterPage = () => {
               required
               minLength={3}
             />
+            {fieldErrors.username && <div className={styles.error}>{fieldErrors.username}</div>}
 
             <div className={styles.formTitle}>Password</div>
             <input
@@ -93,6 +91,7 @@ const RegisterPage = () => {
               required
               minLength={6}
             />
+            {fieldErrors.password && <div className={styles.error}>{fieldErrors.password}</div>}
             <div className={styles.formTitle}>Confirm Password</div>
             <input
               type="password"
@@ -102,6 +101,7 @@ const RegisterPage = () => {
               required
               minLength={6}
             />
+            {fieldErrors.confirmPassword && <div className={styles.error}>{fieldErrors.confirmPassword}</div>}
             {error && <div className={styles.error}>{error}</div>}
             {success && (
               <div className={styles.success}>Registration successful! Redirecting...</div>

@@ -23,6 +23,9 @@ const BookAppointment: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [successAppointmentId, setSuccessAppointmentId] = useState<number | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -169,10 +172,27 @@ const BookAppointment: React.FC = () => {
     };
 
     try {
-      await addAppointment(appointmentRequest);
-      alert(
+      const response = await addAppointment(appointmentRequest);
+
+      // Try to read created appointment id:
+      // - Prefer response.data.id if backend returns full appointment
+      // - Otherwise parse Location header set by CreatedAtAction -> "/appointments/{id}"
+      let appointmentId = response?.data?.id ?? null;
+      if (!appointmentId) {
+        const locationHeader = response?.headers?.location ?? response?.headers?.Location;
+        if (locationHeader) {
+          const parts = locationHeader.split("/");
+          const last = parts[parts.length - 1];
+          const parsed = Number(last);
+          if (!isNaN(parsed)) appointmentId = parsed;
+        }
+      }
+
+      setSuccessAppointmentId(appointmentId);
+      setSuccessMessage(
         `Appointment successfully booked with ${selectedDoctor.name} on ${selectedDate} at ${selectedTime}`
       );
+      setIsModalOpen(true);
       setSelectedSpecialty("");
       setSelectedDoctor(null);
       setSelectedDate("");
@@ -204,6 +224,30 @@ const BookAppointment: React.FC = () => {
         <div className="book-appointment">
           <div className="loading">Loading doctors...</div>
         </div>
+
+        {isModalOpen && (
+          <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div className="modal" role="document">
+              <h2 id="modal-title">Booking Confirmed</h2>
+              <p className="modal-message">{successMessage}</p>
+              <p className="modal-id"><strong>Appointment ID:</strong> {successAppointmentId ?? "N/A"}</p>
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  className="book-btn"
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setSuccessAppointmentId(null);
+                    setSuccessMessage(null);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <Footer />
       </>
     );
@@ -221,6 +265,30 @@ const BookAppointment: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {isModalOpen && (
+          <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div className="modal" role="document">
+              <h2 id="modal-title">Booking Confirmed</h2>
+              <p className="modal-message">{successMessage}</p>
+              <p className="modal-id"><strong>Appointment ID:</strong> {successAppointmentId ?? "N/A"}</p>
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  className="book-btn"
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setSuccessAppointmentId(null);
+                    setSuccessMessage(null);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <Footer />
       </>
     );
@@ -364,6 +432,30 @@ const BookAppointment: React.FC = () => {
           )}
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div className="modal" role="document">
+            <h2 id="modal-title">Booking Confirmed</h2>
+            <p className="modal-message">{successMessage}</p>
+            <p className="modal-id"><strong>Appointment ID:</strong> {successAppointmentId ?? "N/A"}</p>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="book-btn"
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setSuccessAppointmentId(null);
+                  setSuccessMessage(null);
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );

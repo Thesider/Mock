@@ -15,6 +15,7 @@ const Profile: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [editedPatient, setEditedPatient] = useState<Partial<Patient>>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ [k: string]: string }>({});
   const location = useLocation();
 
   // Fetch user and patient profile from API
@@ -311,10 +312,20 @@ const Profile: React.FC = () => {
   }, [location.search]);
 
   const handleSave = async () => {
-    if (!editedPatient.name || !editedPatient.dateOfBirth || !editedPatient.gender) {
-      setError('Please fill in all required fields (Name, Date of Birth, Gender)');
+    // Clear previous errors
+    setError(null);
+    const errs: { [k: string]: string } = {};
+    if (!editedPatient.name || editedPatient.name.trim() === '') errs.name = 'Full name is required.';
+    if (!editedPatient.dateOfBirth) errs.dateOfBirth = 'Date of birth is required.';
+    if (!editedPatient.gender) errs.gender = 'Gender is required.';
+    if (editedPatient.email && !/^\S+@\S+\.\S+$/.test(editedPatient.email)) errs.email = 'Email address is invalid.';
+    if (editedPatient.phoneNumber && !/^[\d+\-()\s]+$/.test(editedPatient.phoneNumber)) errs.phoneNumber = 'Phone number is invalid.';
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs);
+      setError('Please correct the highlighted fields.');
       return;
     }
+    setFieldErrors({});
 
     try {
       setSaving(true);
@@ -505,12 +516,15 @@ const Profile: React.FC = () => {
             <div className="info-group">
               <label>Full Name</label>
               {isEditing ? (
-                <input
-                  type="text"
-                  value={editedPatient.name || ''}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="Enter your full name"
-                />
+                <>
+                  <input
+                    type="text"
+                    value={editedPatient.name || ''}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    placeholder="Enter your full name"
+                  />
+                  {fieldErrors.name && <div className="error">{fieldErrors.name}</div>}
+                </>
               ) : (
                 <span>{patient?.name || ''}</span>
               )}
@@ -518,12 +532,15 @@ const Profile: React.FC = () => {
             <div className="info-group">
               <label>Date of Birth</label>
               {isEditing ? (
-                <input
-                  type="date"
-                  value={editedPatient.dateOfBirth ? editedPatient.dateOfBirth.split('T')[0] : ''}
-                  onChange={(e) => handleInputChange('dateOfBirth', e.target.value + 'T00:00:00')}
-                  aria-label="Date of Birth"
-                />
+                <>
+                  <input
+                    type="date"
+                    value={editedPatient.dateOfBirth ? editedPatient.dateOfBirth.split('T')[0] : ''}
+                    onChange={(e) => handleInputChange('dateOfBirth', e.target.value + 'T00:00:00')}
+                    aria-label="Date of Birth"
+                  />
+                  {fieldErrors.dateOfBirth && <div className="error">{fieldErrors.dateOfBirth}</div>}
+                </>
               ) : (
                 <span>
                   {patient?.dateOfBirth
@@ -536,16 +553,19 @@ const Profile: React.FC = () => {
             <div className="info-group">
               <label>Gender</label>
               {isEditing ? (
-                <select
-                  value={editedPatient.gender || ''}
-                  onChange={(e) => handleInputChange('gender', e.target.value)}
-                  aria-label="Gender"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
+                <>
+                  <select
+                    value={editedPatient.gender || ''}
+                    onChange={(e) => handleInputChange('gender', e.target.value)}
+                    aria-label="Gender"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  {fieldErrors.gender && <div className="error">{fieldErrors.gender}</div>}
+                </>
               ) : (
                 <span>{patient?.gender || 'Not provided'}</span>
               )}
@@ -566,12 +586,15 @@ const Profile: React.FC = () => {
             <div className="info-group">
               <label>Phone Number</label>
               {isEditing ? (
-                <input
-                  type="tel"
-                  value={editedPatient.phoneNumber || ''}
-                  onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                  placeholder="Enter your phone number"
-                />
+                <>
+                  <input
+                    type="tel"
+                    value={editedPatient.phoneNumber || ''}
+                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                    placeholder="Enter your phone number"
+                  />
+                  {fieldErrors.phoneNumber && <div className="error">{fieldErrors.phoneNumber}</div>}
+                </>
               ) : (
                 <span>{patient?.phoneNumber || 'Not provided'}</span>
               )}
@@ -579,12 +602,15 @@ const Profile: React.FC = () => {
             <div className="info-group">
               <label>Email Address</label>
               {isEditing ? (
-                <input
-                  type="email"
-                  value={editedPatient.email || ''}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="Enter your email address"
-                />
+                <>
+                  <input
+                    type="email"
+                    value={editedPatient.email || ''}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    placeholder="Enter your email address"
+                  />
+                  {fieldErrors.email && <div className="error">{fieldErrors.email}</div>}
+                </>
               ) : (
                 <span>{patient?.email || 'Not provided'}</span>
               )}

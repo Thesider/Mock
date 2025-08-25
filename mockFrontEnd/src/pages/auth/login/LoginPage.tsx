@@ -9,15 +9,31 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{ username?: string; password?: string }>({});
   const [success, setSuccess] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const validateAll = () => {
+    const errs: { [k: string]: string } = {};
+    if (!username || username.trim().length === 0) errs.username = "Username is required.";
+    if (!password || password.length === 0) errs.password = "Password is required.";
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setFieldErrors({});
+    setSuccess(false);
+
+    if (!validateAll()) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const authResponse = await Login(username, password);
@@ -88,6 +104,7 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+            {fieldErrors.username && <div className={styles.error}>{fieldErrors.username}</div>}
             <div className={styles.formTitle}>Password</div>
             <input
               type="password"
@@ -96,6 +113,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {fieldErrors.password && <div className={styles.error}>{fieldErrors.password}</div>}
             <div className={styles.rememberForgot}>
               <label className={styles.rememberForgotText}>
                 <input
