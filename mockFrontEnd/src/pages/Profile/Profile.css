@@ -3,11 +3,16 @@
   margin: 40px auto;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.profile-main {
+  flex: 1;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .profile-avatar-section {
@@ -20,7 +25,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #3b82f6;
-  box-shadow: 0 2px 8px rgba(59,130,246,0.15);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
 }
 
 .profile-info-section {
@@ -53,7 +58,8 @@
   margin-top: 20px;
 }
 
-.edit-profile-btn, .change-password-btn {
+.edit-profile-btn,
+.change-password-btn {
   background: linear-gradient(135deg, #4f81ff 0%, #3b82f6 100%);
   color: white;
   border: none;
@@ -65,7 +71,8 @@
   transition: all 0.2s;
 }
 
-.edit-profile-btn:hover, .change-password-btn:hover {
+.edit-profile-btn:hover,
+.change-password-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(79, 129, 255, 0.3);
 }
@@ -82,7 +89,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 40px;
   color: #6b7280;
@@ -125,7 +133,8 @@
   gap: 12px;
 }
 
-.edit-btn, .save-btn {
+.edit-btn,
+.save-btn {
   background: linear-gradient(135deg, #4f81ff 0%, #3b82f6 100%);
   color: white;
   border: none;
@@ -137,7 +146,8 @@
   transition: all 0.2s;
 }
 
-.edit-btn:hover, .save-btn:hover {
+.edit-btn:hover,
+.save-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(79, 129, 255, 0.3);
 }

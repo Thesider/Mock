@@ -5,7 +5,6 @@ import {
   FileTextOutlined,
   TeamOutlined,
   UserOutlined,
-  ScheduleOutlined,
   SettingOutlined,
   SolutionOutlined,
   HomeOutlined,
@@ -31,11 +30,7 @@ const menuItems = [
     icon: <UserOutlined />,
     label: "Patients",
   },
-  {
-    key: "/admin/reports",
-    icon: <ScheduleOutlined />,
-    label: "Reports",
-  },
+
   {
     key: "/admin/settings",
     icon: <SettingOutlined />,
