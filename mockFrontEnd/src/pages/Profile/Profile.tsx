@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { useLocation } from 'react-router-dom';
-import { GetUserById } from '../../api/UserApi';
+import { GetUserById, UpdateUser } from '../../api/UserApi';
 import { getPatientById, getPatientByName, getAllPatients, updatePatient, addPatient } from '../../api/PatientApi';
 import type { User } from '../../api/UserApi';
 import type { Patient } from '../../api/PatientApi';
@@ -344,15 +344,49 @@ const Profile: React.FC = () => {
         setPatient(updated);
         try {
           localStorage.setItem('patient', JSON.stringify(updated));
+          localStorage.setItem('patientId', String(updated.id));
         } catch (err) {
+        }
+
+        // Ensure user's patientId is linked in localStorage and backend
+        try {
+          const userStorage = localStorage.getItem('user');
+          if (userStorage) {
+            const parsedUser = JSON.parse(userStorage);
+            if (parsedUser && parsedUser.id) {
+              const updatedUser = { ...parsedUser, patientId: updated.id };
+              await UpdateUser(parsedUser.id, updatedUser);
+              localStorage.setItem('user', JSON.stringify(updatedUser));
+              setUser(updatedUser);
+            }
+          }
+        } catch (err) {
+          console.error('Profile: Failed to link patient to user on update', err);
         }
       } else {
         const response = await addPatient(patientData);
-        setPatient(response.data);
+        const newPatient = response.data;
+        setPatient(newPatient);
         try {
-          localStorage.setItem('patient', JSON.stringify(response.data));
+          localStorage.setItem('patient', JSON.stringify(newPatient));
+          localStorage.setItem('patientId', String(newPatient.id));
         } catch (err) {
           // ignore storage errors
+        }
+
+        // Link patient to current user
+        try {
+          const userStorage = localStorage.getItem('user');
+          if (userStorage) {
+            const parsedUser = JSON.parse(userStorage);
+            const updatedUser = { ...parsedUser, patientId: newPatient.id };
+            await UpdateUser(parsedUser.id, updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            localStorage.setItem('patientId', String(newPatient.id));
+            setUser(updatedUser);
+          }
+        } catch (err) {
+          console.error('Profile: Failed to link patient to user', err);
         }
       }
 

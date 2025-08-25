@@ -47,6 +47,7 @@ namespace MockProject.Controllers
                 {
                     id = result.User!.Id,
                     username = result.User.UserName,
+                    patientId = result.User.PatientId,
                     role = result.User.Role.ToString()
                 }
             });
@@ -81,6 +82,7 @@ namespace MockProject.Controllers
                 {
                     id = result.User!.Id,
                     username = result.User.UserName,
+                    patientId = result.User.PatientId,
                     role = result.User.Role.ToString()
                 }
             });
@@ -105,6 +107,7 @@ namespace MockProject.Controllers
             {
                 id = user.Id,
                 username = user.UserName,
+                patientId = user.PatientId,
                 role = user.Role.ToString()
             });
         }

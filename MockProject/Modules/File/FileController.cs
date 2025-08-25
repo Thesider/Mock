@@ -1,6 +1,8 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using MockProject.Auth;
 
 namespace MockProject.Modules.File
 {
@@ -32,6 +34,12 @@ namespace MockProject.Modules.File
                 return BadRequest(validationResult.Errors);
             }
 
+            if (file.PatientId > 0 && !AuthorizationHelpers.IsUserAllowedForPatient(User, file.PatientId))
+            {
+                _logger.LogWarning("Unauthorized attempt to add file for patient {PatientId}", file.PatientId);
+                return Forbid();
+            }
+
             try
             {
                 await _fileServices.AddFileAsync(file);
@@ -58,6 +66,13 @@ namespace MockProject.Modules.File
                     _logger.LogWarning("File with id {Id} not found.", id);
                     return NotFound();
                 }
+
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, file.PatientId))
+                {
+                    _logger.LogWarning("Unauthorized access to file {Id} with patient {PatientId}", id, file.PatientId);
+                    return Forbid();
+                }
+
                 _logger.LogInformation("File with id {Id} retrieved.", id);
                 return Ok(file);
             }
@@ -114,6 +129,12 @@ namespace MockProject.Modules.File
                     return NotFound();
                 }
 
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, existingFile.PatientId))
+                {
+                    _logger.LogWarning("Unauthorized update attempt for file {Id} (patient {PatientId})", id, existingFile.PatientId);
+                    return Forbid();
+                }
+
                 file.Id = id;
                 await _fileServices.UpdateFileAsync(file);
                 _logger.LogInformation("File with id {Id} updated.", id);
@@ -141,6 +162,12 @@ namespace MockProject.Modules.File
                     return NotFound();
                 }
 
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, file.PatientId))
+                {
+                    _logger.LogWarning("Unauthorized delete attempt for file {Id} (patient {PatientId})", id, file.PatientId);
+                    return Forbid();
+                }
+
                 await _fileServices.DeleteFileAsync(id);
                 _logger.LogInformation("File with id {Id} deleted.", id);
                 return NoContent();
@@ -164,6 +191,12 @@ namespace MockProject.Modules.File
                 {
                     _logger.LogWarning("No file provided for upload.");
                     return BadRequest("No file provided");
+                }
+
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, patientId))
+                {
+                    _logger.LogWarning("Unauthorized upload attempt for patient {PatientId}", patientId);
+                    return Forbid();
                 }
 
                 var fileEntity = await _fileServices.SaveFileAsync(file, patientId);
@@ -195,6 +228,12 @@ namespace MockProject.Modules.File
         {
             try
             {
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, patientId))
+                {
+                    _logger.LogWarning("Unauthorized access to files for patient {PatientId}", patientId);
+                    return Forbid();
+                }
+
                 var files = await _fileServices.GetFilesByPatientIdAsync(patientId);
                 _logger.LogInformation("Retrieved {Count} files for patient {PatientId}", files.Count(), patientId);
                 return Ok(files);
@@ -214,6 +253,19 @@ namespace MockProject.Modules.File
         {
             try
             {
+                var fileEntity = await _fileServices.GetFileByIdAsync(fileId);
+                if (fileEntity == null)
+                {
+                    _logger.LogWarning("File with id {Id} not found for download.", fileId);
+                    return NotFound();
+                }
+
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, fileEntity.PatientId))
+                {
+                    _logger.LogWarning("Unauthorized download attempt for file {Id} (patient {PatientId})", fileId, fileEntity.PatientId);
+                    return Forbid();
+                }
+
                 var (fileContent, contentType, fileName) = await _fileServices.GetFileContentAsync(fileId);
                 _logger.LogInformation("File {FileName} downloaded successfully", fileName);
 
@@ -239,6 +291,19 @@ namespace MockProject.Modules.File
         {
             try
             {
+                var fileEntity = await _fileServices.GetFileByIdAsync(fileId);
+                if (fileEntity == null)
+                {
+                    _logger.LogWarning("File with id {Id} not found for preview.", fileId);
+                    return NotFound();
+                }
+
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, fileEntity.PatientId))
+                {
+                    _logger.LogWarning("Unauthorized preview attempt for file {Id} (patient {PatientId})", fileId, fileEntity.PatientId);
+                    return Forbid();
+                }
+
                 var (fileContent, contentType, fileName) = await _fileServices.GetFileContentAsync(fileId);
                 _logger.LogInformation("File {FileName} previewed successfully", fileName);
 
@@ -270,6 +335,12 @@ namespace MockProject.Modules.File
                 {
                     _logger.LogWarning("File with id {Id} not found for info.", fileId);
                     return NotFound();
+                }
+
+                if (!AuthorizationHelpers.IsUserAllowedForPatient(User, fileEntity.PatientId))
+                {
+                    _logger.LogWarning("Unauthorized access to file info for file {Id} (patient {PatientId})", fileId, fileEntity.PatientId);
+                    return Forbid();
                 }
 
                 var fileInfo = new

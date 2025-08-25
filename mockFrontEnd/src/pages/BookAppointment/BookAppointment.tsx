@@ -58,10 +58,7 @@ const BookAppointment: React.FC = () => {
       "16:00",
       "16:30",
     ];
-    return times.map((time) => ({
-      time,
-      available: Math.random() > 0.3, // Demo only
-    }));
+    return times.map((time) => ({ time, available: true }));
   };
   const timeSlots = generateTimeSlots();
 
@@ -101,7 +98,63 @@ const BookAppointment: React.FC = () => {
     }
     setSubmitting(true);
 
-    const currentPatientId = Number(localStorage.getItem("patientId")) || 1;
+    const getCurrentPatientId = (): number => {
+      // Prefer patientId from JWT token claim (most authoritative)
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const parts = token.split('.');
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1]));
+            if (payload?.patientId) {
+              const n = Number(payload.patientId);
+              if (!isNaN(n) && n > 0) return n;
+            }
+          }
+        } catch (e) {
+          /* ignore token parse errors */
+        }
+      }
+
+      // Try explicit patientId key
+      const pid = localStorage.getItem("patientId");
+      if (pid) {
+        const n = Number(pid);
+        if (!isNaN(n) && n > 0) return n;
+      }
+
+      // Try stored user object
+      const userStorage = localStorage.getItem("user");
+      if (userStorage) {
+        try {
+          const parsed = JSON.parse(userStorage);
+          if (parsed?.patientId) {
+            const n = Number(parsed.patientId);
+            if (!isNaN(n) && n > 0) return n;
+          }
+        } catch (e) {
+          /* ignore */
+        }
+      }
+
+      // Try stored patient object
+      const patientStorage = localStorage.getItem("patient");
+      if (patientStorage) {
+        try {
+          const parsedP = JSON.parse(patientStorage);
+          if (parsedP?.id) {
+            const n = Number(parsedP.id);
+            if (!isNaN(n) && n > 0) return n;
+          }
+        } catch (e) {
+          /* ignore */
+        }
+      }
+
+      return 0;
+    };
+
+    const currentPatientId = getCurrentPatientId();
 
     const appointmentRequest: CreateAppointmentRequest = {
       id: 0,
@@ -111,7 +164,7 @@ const BookAppointment: React.FC = () => {
       endTime: `${selectedDate}T${addMinutes(selectedTime, 30)}:00`,
       description: `Appointment with ${selectedDoctor.name}`,
       location: selectedDoctor.department,
-      status: 0, // 0 = Scheduled
+      status: 0,
       doctorId: selectedDoctor.id,
     };
 

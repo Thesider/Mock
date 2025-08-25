@@ -7,7 +7,7 @@ export interface User {
     username: string;
     password: string;
     role: UserRole;
-
+    patientId?: number;
 }
 
 export const AddUser = async (user: User) => AxiosClient.post("/user", user);

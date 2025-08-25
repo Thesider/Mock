@@ -50,31 +50,8 @@ const DoctorsPage: React.FC = () => {
 
   const handleDeleteDoctor = async (doctor: Doctor) => {
     console.log("handleDeleteDoctor called", doctor.id);
-    try {
-      if (Modal && typeof Modal.confirm === "function") {
-        Modal.confirm({
-          title: `Delete doctor ${doctor.name}?`,
-          content: "This action cannot be undone.",
-          okText: "Delete",
-          okType: "danger",
-          onOk: async () => {
-            console.log("Modal.confirm onOk for doctor", doctor.id);
-            try {
-              await deleteDoctor(doctor.id);
-              setDoctors(prev => prev.filter(d => d.id !== doctor.id));
-              message.success("Doctor deleted");
-            } catch (err) {
-              console.error("Failed to delete doctor", err);
-              message.error("Failed to delete doctor");
-            }
-          }
-        });
-        return;
-      }
-    } catch (err) {
-      console.warn("Modal.confirm unavailable, falling back to window.confirm", err);
-    }
 
+    // Use simple browser confirm to avoid Ant Design modal issues
     const ok = window.confirm(`Delete doctor ${doctor.name}? This action cannot be undone.`);
     if (!ok) return;
 

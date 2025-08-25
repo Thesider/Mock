@@ -14,12 +14,12 @@ import PatientsPage from "./admin/pages/PatientsPage";
 import ReportsPage from "./admin/pages/ReportsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./pages/Unauthorized";
-// User Dashboard Components
 import UserDashboard from "./pages/Dashboard/Dashboard";
 import MyAppointments from "./pages/MyAppointments/MyAppointments";
 import BookAppointment from "./pages/BookAppointment/BookAppointment";
 import MedicalRecords from "./pages/MedicalRecords/MedicalRecords";
 import Profile from "./pages/Profile/Profile";
+import CheckIn from "./pages/CheckIn/CheckIn";
 
 function App() {
   return (
@@ -77,6 +77,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/checkin"
+          element={
+            <ProtectedRoute>
+              <CheckIn />
+            </ProtectedRoute>
+          }
+        />c
 
         {/* Protected Admin Routes */}
         <Route

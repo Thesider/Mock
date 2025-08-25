@@ -7,6 +7,7 @@ namespace MockProject.Modules.User
         public int Id { get; set; }
         public required string UserName { get; set; }
         public required string Password { get; set; }
+        public int? PatientId { get; set; }
         public UserRole Role { get; set; }
     }
 
@@ -19,4 +20,3 @@ namespace MockProject.Modules.User
         User
     }
 }
-

@@ -1,5 +1,6 @@
 using Microsoft.IdentityModel.Tokens;
 using MockProject.Modules.User;
+using MockProject.Modules.Patient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -10,15 +11,18 @@ namespace MockProject.Auth
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPatientService _patientService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthService> _logger;
 
         public AuthService(
             IUserRepository userRepository,
+            IPatientService patientService,
             IConfiguration configuration,
             ILogger<AuthService> logger)
         {
             _userRepository = userRepository;
+            _patientService = patientService;
             _configuration = configuration;
             _logger = logger;
         }
@@ -104,17 +108,28 @@ namespace MockProject.Auth
                     };
                 }
 
-                // Create new user
+                // Create a patient record and bind to the new user (minimal stub)
+                var patient = new PatientEntity
+                {
+                    Name = request.Username,
+                    DateOfBirth = DateTime.UtcNow,
+                    Gender = "Other"
+                };
+
+                await _patientService.AddPatientAsync(patient);
+
+                // Create new user and set PatientId to the created patient
                 var user = new UserEntity
                 {
                     UserName = request.Username,
                     Password = HashPassword(request.Password), // In production, use proper hashing
+                    PatientId = patient.Id,
                     Role = request.Role
                 };
 
                 await _userRepository.AddUserAsync(user);
 
-                _logger.LogInformation("New user {Username} registered successfully", request.Username);
+                _logger.LogInformation("New user {Username} registered successfully with PatientId {PatientId}", request.Username, patient.Id);
 
                 // Generate tokens for immediate login
                 var token = GenerateJwtToken(user);
@@ -252,7 +267,8 @@ namespace MockProject.Auth
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Role, user.Role.ToString()),
                     new Claim("username", user.UserName),
-                    new Claim("role", user.Role.ToString())
+                    new Claim("role", user.Role.ToString()),
+                    new Claim("patientId", user.PatientId.HasValue ? user.PatientId.Value.ToString() : "")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(

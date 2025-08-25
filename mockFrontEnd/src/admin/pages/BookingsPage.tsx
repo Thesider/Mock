@@ -15,23 +15,18 @@ const statusColors = {
 const BookingsPage: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  const handleDeleteAppointment = (appointment: Appointment) => {
-    Modal.confirm({
-      title: `Delete booking #${appointment.id}?`,
-      content: "This action cannot be undone.",
-      okText: "Delete",
-      okType: "danger",
-      onOk: async () => {
-        try {
-          await deleteAppointment(appointment.id);
-          setAppointments(prev => prev.filter(a => a.id !== appointment.id));
-          message.success("Booking deleted");
-        } catch (err) {
-          console.error("Failed to delete booking", err);
-          message.error("Failed to delete booking");
-        }
-      }
-    });
+  const handleDeleteAppointment = async (appointment: Appointment) => {
+    // Use simple browser confirm to avoid Ant Design modal issues
+    const ok = window.confirm(`Delete booking #${appointment.id}? This action cannot be undone.`);
+    if (!ok) return;
+    try {
+      await deleteAppointment(appointment.id);
+      setAppointments(prev => prev.filter(a => a.id !== appointment.id));
+      message.success("Booking deleted");
+    } catch (err) {
+      console.error("Failed to delete booking", err);
+      message.error("Failed to delete booking");
+    }
   };
 
   const columns: any[] = [
