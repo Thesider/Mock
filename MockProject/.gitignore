@@ -9,3 +9,36 @@ bin/
 *.sourcelink.json
 MockProject.AssemblyInfo.cs
 MockProject.AssemblyInfoInputs.cache
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache/options
+.vs/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+
+# NuGet
+*.nupkg
+*.snupkg
+
+# Uploads directory - user uploaded files
+uploads/
+
+# Environment files
+.env
+.env.local
